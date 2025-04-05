@@ -43,4 +43,7 @@ public class AttributeDefinitionEntity {
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttributeDefinitionSelectableOptions> selectableOptions;
 
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AttributeValueEntity> values;
+
 }
