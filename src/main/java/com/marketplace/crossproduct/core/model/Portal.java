@@ -1,17 +1,16 @@
 package com.marketplace.crossproduct.core.model;
 
-import com.marketplace.crossproduct.security.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @Data
-public class User {
+public class Portal {
     private Long id;
-    private String username;
-    private String password;
-    private Role role;
-    private Portal portal;
+    private String name;
+    private List<User> users;
 }
