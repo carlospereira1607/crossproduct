@@ -1,6 +1,9 @@
 package com.marketplace.crossproduct.security;
 
+import java.util.Arrays;
+
 public enum Role {
-    USER,
-    ADMIN
+    PLATFORM_ADMIN,
+    PORTAL_ADMIN;
+
 }

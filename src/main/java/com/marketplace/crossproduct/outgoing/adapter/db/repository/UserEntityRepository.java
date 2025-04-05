@@ -1,6 +1,6 @@
-package com.marketplace.crossproduct.outgoing.db;
+package com.marketplace.crossproduct.outgoing.adapter.db.repository;
 
-import com.marketplace.crossproduct.outgoing.db.entity.UserEntity;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

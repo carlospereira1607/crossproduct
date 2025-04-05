@@ -1,13 +1,12 @@
-package com.marketplace.crossproduct.outgoing.db.entity;
+package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
-import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "attribute_specification")
-public class AttributeDefinitionSpecificationEntity {
+@Table(name = "attribute_definition_selectable_option")
+public class AttributeDefinitionSelectableOption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +28,8 @@ public class AttributeDefinitionSpecificationEntity {
     @Column(nullable = false)
     private String value;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AttributeDefinitionSpecificationType type;
+    @ManyToOne
+    @JoinColumn(name = "attribute_definition_id", nullable = false)
+    private AttributeDefinitionEntity definition;
 
 }

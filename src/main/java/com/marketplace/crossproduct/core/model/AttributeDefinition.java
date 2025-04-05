@@ -1,8 +1,8 @@
 package com.marketplace.crossproduct.core.model;
 
-import com.marketplace.crossproduct.outgoing.db.entity.AttributeDefinitionSelectableOption;
-import com.marketplace.crossproduct.outgoing.db.entity.AttributeDefinitionSpecificationEntity;
-import com.marketplace.crossproduct.outgoing.db.entity.AttributeValueEntity;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeDefinitionSelectableOption;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeDefinitionSpecificationEntity;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeValueEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

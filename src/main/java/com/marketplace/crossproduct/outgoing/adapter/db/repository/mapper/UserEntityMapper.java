@@ -1,7 +1,7 @@
-package com.marketplace.crossproduct.outgoing.db.mapper;
+package com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper;
 
 import com.marketplace.crossproduct.core.model.User;
-import com.marketplace.crossproduct.outgoing.db.entity.UserEntity;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

@@ -1,4 +1,4 @@
-package com.marketplace.crossproduct.outgoing.db.entity;
+package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "attribute_definition_selectable_option")
-public class AttributeDefinitionSelectableOption {
+@Table(name = "attribute_value")
+public class AttributeValueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,9 @@ public class AttributeDefinitionSelectableOption {
 
     @Column(nullable = false)
     private String value;
+
+    @Column(nullable = false)
+    private Boolean isStandard;
 
     @ManyToOne
     @JoinColumn(name = "attribute_definition_id", nullable = false)

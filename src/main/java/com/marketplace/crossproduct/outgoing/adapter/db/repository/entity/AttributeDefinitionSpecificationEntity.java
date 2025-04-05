@@ -1,6 +1,6 @@
-package com.marketplace.crossproduct.outgoing.db.entity;
+package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
-import com.marketplace.crossproduct.security.Role;
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -8,8 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,25 +19,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "app_user")
-public class UserEntity {
+@Table(name = "attribute_specification")
+public class AttributeDefinitionSpecificationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", unique = true, nullable = false)
-    private String username;
-
-    @Column(name = "password", nullable = false)
-    private String password;
+    @Column(nullable = false)
+    private String value;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role role;
-
-    @ManyToOne
-    @JoinColumn(name = "portal_id", nullable = false)
-    private PortalEntity portal;
+    @Column(nullable = false)
+    private AttributeDefinitionSpecificationType type;
 
 }

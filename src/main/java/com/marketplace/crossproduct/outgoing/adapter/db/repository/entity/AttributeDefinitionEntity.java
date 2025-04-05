@@ -1,4 +1,4 @@
-package com.marketplace.crossproduct.outgoing.db.entity;
+package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import jakarta.persistence.CascadeType;
