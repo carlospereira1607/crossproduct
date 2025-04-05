@@ -28,6 +28,9 @@ public class AttributeValueEntity {
     @Column(nullable = false)
     private String value;
 
+    @Column(nullable = false)
+    private Boolean isStandard;
+
     @ManyToOne
     @JoinColumn(name = "attribute_definition_id", nullable = false)
     private AttributeDefinitionEntity definition;
