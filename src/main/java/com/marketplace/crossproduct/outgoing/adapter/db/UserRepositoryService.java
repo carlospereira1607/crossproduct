@@ -17,6 +17,12 @@ public class UserRepositoryService implements UserPortRepository {
     private final UserEntityMapper userEntityMapper;
 
     @Override
+    public User save(User user) {
+        var userEntity = userEntityMapper.toUserEntity(user);
+        return userEntityMapper.toUser(userEntityRepository.save(userEntity));
+    }
+
+    @Override
     public Optional<User> findByUsername(final String username) {
         var existingUser = userEntityRepository.findByUsername(username);
         return existingUser.map(userEntityMapper::toUser);

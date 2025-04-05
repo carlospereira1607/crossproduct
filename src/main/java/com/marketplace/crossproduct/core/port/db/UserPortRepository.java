@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface UserPortRepository {
 
+    User save(final User user);
+
     Optional<User> findByUsername(final String username);
 
 }

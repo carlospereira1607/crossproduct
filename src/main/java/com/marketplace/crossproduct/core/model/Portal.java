@@ -12,5 +12,4 @@ import java.util.List;
 public class Portal {
     private Long id;
     private String name;
-    private List<User> users;
 }

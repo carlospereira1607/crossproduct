@@ -17,4 +17,8 @@ public class UserService {
         return userPortRepository.findByUsername(username);
     }
 
+    public User save(final User user) {
+        return userPortRepository.save(user);
+    }
+
 }
