@@ -1,6 +1,6 @@
 package com.marketplace.crossproduct.core.model;
 
-public enum AttributeType {
+public enum AttributeDefinitionType {
     TEXT,
     NUMBER,
     DATE,
