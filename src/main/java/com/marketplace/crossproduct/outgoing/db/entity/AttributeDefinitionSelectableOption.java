@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "attribute_definition_selectable_options")
-public class AttributeDefinitionSelectableOptions {
+@Table(name = "attribute_definition_selectable_option")
+public class AttributeDefinitionSelectableOption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
