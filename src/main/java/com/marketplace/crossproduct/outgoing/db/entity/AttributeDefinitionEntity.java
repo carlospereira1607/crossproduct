@@ -1,8 +1,11 @@
 package com.marketplace.crossproduct.outgoing.db.entity;
 
+import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,16 +35,16 @@ public class AttributeDefinitionEntity {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "type_id", nullable = false)
-    private AttributeDefinitionTypeEntity type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "attribute_type", nullable = false)
+    private AttributeDefinitionType type;
 
     @ManyToOne
     @JoinColumn(name = "specification_id", nullable = false)
     private AttributeDefinitionSpecification specification;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AttributeDefinitionSelectableOptions> selectableOptions;
+    private Set<AttributeDefinitionSelectableOption> selectableOptions;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttributeValueEntity> values;
