@@ -10,8 +10,6 @@ import com.marketplace.crossproduct.incoming.dto.LoginRequestDto;
 import com.marketplace.crossproduct.incoming.dto.LoginResponseDto;
 import com.marketplace.crossproduct.security.Role;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
