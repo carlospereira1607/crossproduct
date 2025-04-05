@@ -24,7 +24,6 @@ public class AuthController {
     private final AuthenticateUserUseCase authenticateUserUseCase;
     private final CreateUserUseCase createUserUseCase;
 
-
     @PostMapping("/create")
     public ResponseEntity<CreateUserResponseDto> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
         var createUserInput = CreateUserInput.builder()
@@ -53,6 +52,5 @@ public class AuthController {
 
         return new LoginResponseDto(output.getToken());
     }
-
 
 }
