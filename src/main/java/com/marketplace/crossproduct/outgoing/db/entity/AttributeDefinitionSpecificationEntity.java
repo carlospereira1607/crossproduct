@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "attribute_specification")
-public class AttributeDefinitionSpecification {
+public class AttributeDefinitionSpecificationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

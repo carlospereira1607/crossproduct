@@ -41,7 +41,7 @@ public class AttributeDefinitionEntity {
 
     @ManyToOne
     @JoinColumn(name = "specification_id", nullable = false)
-    private AttributeDefinitionSpecification specification;
+    private AttributeDefinitionSpecificationEntity specification;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttributeDefinitionSelectableOption> selectableOptions;
