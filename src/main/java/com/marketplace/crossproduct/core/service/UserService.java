@@ -1,7 +1,7 @@
 package com.marketplace.crossproduct.core.service;
 
 import com.marketplace.crossproduct.core.model.User;
-import com.marketplace.crossproduct.outgoing.db.UserRepository;
+import com.marketplace.crossproduct.outgoing.db.UserEntityRepository;
 import com.marketplace.crossproduct.outgoing.db.entity.UserEntity;
 import com.marketplace.crossproduct.outgoing.db.mapper.UserEntityMapper;
 import com.marketplace.crossproduct.security.Role;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final UserEntityRepository userEntityRepository;
     private final UserEntityMapper userEntityMapper;
 
     public User createUser(final String username, final String password, final Role role) {
@@ -21,6 +21,6 @@ public class UserService {
                 .password(password)
                 .role(role)
                 .build();
-        return userEntityMapper.toUser(userRepository.save(user));
+        return userEntityMapper.toUser(userEntityRepository.save(user));
     }
 }
