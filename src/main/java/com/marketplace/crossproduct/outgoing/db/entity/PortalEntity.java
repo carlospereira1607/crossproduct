@@ -27,7 +27,7 @@ public class PortalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "portal", cascade = CascadeType.ALL, orphanRemoval = true)
