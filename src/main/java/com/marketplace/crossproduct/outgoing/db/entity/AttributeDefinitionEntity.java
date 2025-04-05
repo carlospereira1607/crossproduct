@@ -1,6 +1,5 @@
 package com.marketplace.crossproduct.outgoing.db.entity;
 
-import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +23,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "attribute_definition")
-public class AttributeDefinition {
+public class AttributeDefinitionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

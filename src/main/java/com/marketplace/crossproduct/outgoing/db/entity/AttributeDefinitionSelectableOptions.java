@@ -30,6 +30,6 @@ public class AttributeDefinitionSelectableOptions {
 
     @ManyToOne
     @JoinColumn(name = "attribute_definition_id", nullable = false)
-    private AttributeDefinition definition;
+    private AttributeDefinitionEntity definition;
 
 }
