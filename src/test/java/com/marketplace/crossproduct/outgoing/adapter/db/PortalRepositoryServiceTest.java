@@ -36,7 +36,7 @@ class PortalRepositoryServiceTest {
     private PortalEntityMapper portalEntityMapper;
 
     @Test
-    void testFindById_successful() {
+    void testFindById_found() {
 
         var portalEntity = PortalEntity.builder().id(1L).name("Test Portal").build();
         var portal = Portal.builder().id(1L).name("Test Portal").build();
