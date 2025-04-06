@@ -27,6 +27,4 @@ public class AttributeDefinition {
 
     private Set<AttributeValue> values;
 
-    private Portal portal;
-
 }

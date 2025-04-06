@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class AttributeValueEntity {
 
     @EmbeddedId
-    private PortalProductAttributeDefinitionId id;
+    private AttributeValueId id;
 
     @Column(nullable = false)
     private String value;

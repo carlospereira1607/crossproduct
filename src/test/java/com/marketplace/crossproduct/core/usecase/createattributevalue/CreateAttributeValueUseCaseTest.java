@@ -58,7 +58,7 @@ class CreateAttributeValueUseCaseTest {
         when(attributeDefinitionService.findById(definitionId)).thenReturn(Optional.of(definition));
         when(productService.findById(productId)).thenReturn(Optional.of(product));
         when(portalService.findById(portalId)).thenReturn(Optional.of(portal));
-        when(attributeValueService.create(definition, value, isStandard)).thenReturn(attributeValue);
+        when(attributeValueService.create(definition, product, portal, value, isStandard)).thenReturn(attributeValue);
 
         var output = createAttributeValueUseCase.execute(input);
 
@@ -72,7 +72,7 @@ class CreateAttributeValueUseCaseTest {
         verify(attributeDefinitionService).findById(definitionId);
         verify(productService).findById(productId);
         verify(portalService).findById(portalId);
-        verify(attributeValueService).create(definition, value, isStandard);
+        verify(attributeValueService).create(definition, product, portal, value, isStandard);
     }
 
     @Test
@@ -157,7 +157,7 @@ class CreateAttributeValueUseCaseTest {
         when(attributeDefinitionService.findById(definitionId)).thenReturn(Optional.of(definition));
         when(productService.findById(productId)).thenReturn(Optional.of(product));
         when(portalService.findById(portalId)).thenReturn(Optional.of(portal));
-        when(attributeValueService.create(definition, value, isStandard)).thenThrow(new RuntimeException("Failed to create attribute value"));
+        when(attributeValueService.create(definition, product, portal, value, isStandard)).thenThrow(new RuntimeException("Failed to create attribute value"));
 
         var exception = assertThrows(RuntimeException.class, () -> {
             createAttributeValueUseCase.execute(input);

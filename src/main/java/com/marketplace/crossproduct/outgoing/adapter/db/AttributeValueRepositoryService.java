@@ -3,6 +3,8 @@ package com.marketplace.crossproduct.outgoing.adapter.db;
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.port.db.AttributeValuePortRepository;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.AttributeValueEntityRepository;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeValueEntity;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeValueId;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper.AttributeValueEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -25,7 +27,8 @@ public class AttributeValueRepositoryService implements AttributeValuePortReposi
 
     @Override
     public AttributeValue save(final AttributeValue entry) {
-        var entity = mapper.toAttributeValueEntity(entry);
+        var id = new AttributeValueId(entry.getPortal().getId(), entry.getProduct().getId(), entry.getDefinition().getId());
+        var entity = mapper.toAttributeValueEntity(entry, id);
         var result = repository.save(entity);
         return mapper.toAttributeValue(result);
     }

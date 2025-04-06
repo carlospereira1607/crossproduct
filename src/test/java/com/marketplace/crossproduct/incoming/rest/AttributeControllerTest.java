@@ -14,8 +14,11 @@ import com.marketplace.crossproduct.core.usecase.updateattributevalue.UpdateAttr
 import com.marketplace.crossproduct.core.usecase.updateattributevalue.UpdateAttributeValueUseCase;
 import com.marketplace.crossproduct.incoming.dto.createattributedefinition.CreateAttributeDefinitionRequestDto;
 import com.marketplace.crossproduct.incoming.dto.createattributedefinition.CreateAttributeDefinitionResponseDto;
+import com.marketplace.crossproduct.incoming.dto.createattributevalue.AttributeDefinitionDto;
 import com.marketplace.crossproduct.incoming.dto.createattributevalue.CreateAttributeValueRequestDto;
 import com.marketplace.crossproduct.incoming.dto.createattributevalue.CreateAttributeValueResponseDto;
+import com.marketplace.crossproduct.incoming.dto.createattributevalue.PortalDto;
+import com.marketplace.crossproduct.incoming.dto.createattributevalue.ProductDto;
 import com.marketplace.crossproduct.incoming.dto.updateattributevalue.UpdateAttributeValueRequestDto;
 import com.marketplace.crossproduct.incoming.dto.updateattributevalue.UpdateAttributeValueResponseDto;
 import com.marketplace.crossproduct.incoming.mapper.CreateAttributeDefinitionMapper;
@@ -59,9 +62,8 @@ class AttributeControllerTest {
 
     @Test
     void testCreateAttributeDefinition_success() {
-        var requestDto = new CreateAttributeDefinitionRequestDto(
-                1L, "Color", "TEXT", "TEXT_FORMAT", "something",  Set.of("Red", "Blue")
-        );
+        var requestDto = new CreateAttributeDefinitionRequestDto("Color", "TEXT", "TEXT_FORMAT",
+                "something",  Set.of("Red", "Blue"));
 
         var input = CreateAttributeDefinitionInput.builder()
                 .name("Color")
@@ -103,8 +105,7 @@ class AttributeControllerTest {
 
     @Test
     void testCreateAttributeDefinition_duplicate_shouldThrowException() {
-        var requestDto = new CreateAttributeDefinitionRequestDto(1L, "Color", "TEXT", "TEXT_FORMAT", "something", Set.of("Red", "Blue")
-        );
+        var requestDto = new CreateAttributeDefinitionRequestDto("Color", "TEXT", "TEXT_FORMAT", "something", Set.of("Red", "Blue"));
 
         var input = CreateAttributeDefinitionInput.builder()
                 .name("Color")
@@ -149,9 +150,10 @@ class AttributeControllerTest {
                 .definition(AttributeDefinition.builder().id(1L).build())
                 .build();
 
-        var definition = AttributeDefinition.builder().build();
-
-        var responseDto = new CreateAttributeValueResponseDto(100L, "Red", true, definition);
+        var definitionDto = new AttributeDefinitionDto(null, null, null, null, null, null);
+        var portalDto = new PortalDto(null, null);
+        var productDto = new ProductDto(null, null);
+        var responseDto = new CreateAttributeValueResponseDto("value", true, portalDto, productDto, definitionDto);
 
         when(createAttributeValueMapper.toCreateAttributeValueInput(requestDto)).thenReturn(input);
         when(createAttributeValueUseCase.execute(input)).thenReturn(output);

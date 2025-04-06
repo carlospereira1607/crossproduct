@@ -2,6 +2,8 @@ package com.marketplace.crossproduct.core.service;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
+import com.marketplace.crossproduct.core.model.Portal;
+import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.port.db.AttributeValuePortRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -85,6 +87,9 @@ class AttributeValueServiceTest {
                 .name("Color")
                 .build();
 
+        var portal = Portal.builder().build();
+        var product = Product.builder().build();
+
         var inputValue = "Red";
         var isStandard = true;
 
@@ -96,7 +101,7 @@ class AttributeValueServiceTest {
 
         when(attributeValuePortRepository.save(any(AttributeValue.class))).thenReturn(expectedAttributeValue);
 
-        var result = attributeValueService.create(definition, inputValue, isStandard);
+        var result = attributeValueService.create(definition, product, portal, inputValue, isStandard);
 
         assertNotNull(result);
         assertEquals(expectedAttributeValue.getIsStandard(), result.getIsStandard());

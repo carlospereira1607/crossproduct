@@ -16,6 +16,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -64,7 +66,7 @@ class AttributeValueRepositoryServiceTest {
 
     @Test
     void testSave_success() {
-        when(attributeValueEntityMapper.toAttributeValueEntity(domainValue)).thenReturn(entityValue);
+        when(attributeValueEntityMapper.toAttributeValueEntity(eq(domainValue), any())).thenReturn(entityValue);
         when(attributeValueEntityRepository.save(entityValue)).thenReturn(entityValue);
         when(attributeValueEntityMapper.toAttributeValue(entityValue)).thenReturn(domainValue);
 
@@ -74,7 +76,7 @@ class AttributeValueRepositoryServiceTest {
         assertEquals(domainValue.getIsStandard(), result.getIsStandard());
         assertEquals(domainValue.getValue(), result.getValue());
 
-        verify(attributeValueEntityMapper).toAttributeValueEntity(domainValue);
+        verify(attributeValueEntityMapper).toAttributeValueEntity(eq(domainValue), any());
         verify(attributeValueEntityRepository).save(entityValue);
         verify(attributeValueEntityMapper).toAttributeValue(entityValue);
     }
