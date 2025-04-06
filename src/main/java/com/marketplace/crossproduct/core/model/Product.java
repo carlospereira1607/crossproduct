@@ -5,20 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class AttributeValue {
+public class Product {
 
     private Long id;
-
-    private String value;
-
-    private Boolean isStandard;
-
-    private AttributeDefinition definition;
-
-    private Product product;
+    private String name;
+    private Set<AttributeValue> attributes;
 
 }

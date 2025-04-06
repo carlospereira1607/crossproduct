@@ -35,4 +35,8 @@ public class AttributeValueEntity {
     @JoinColumn(name = "attribute_definition_id", nullable = false)
     private AttributeDefinitionEntity definition;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private ProductEntity product;
+
 }

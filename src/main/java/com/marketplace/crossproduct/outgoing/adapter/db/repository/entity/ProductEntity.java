@@ -20,8 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "portal")
-public class PortalEntity {
+@Table(name = "product")
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +30,7 @@ public class PortalEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "portal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserEntity> users;
-
-    @OneToMany(mappedBy = "portal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AttributeDefinitionEntity> attributeDefinitionEntities;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AttributeValueEntity> attributes;
 
 }
