@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface AttributeDefinitionEntityRepository extends JpaRepository<AttributeDefinitionEntity, Long> {
 
-    Optional<AttributeDefinitionEntity> findByNameAndPortalId(String name, Long portalId);
+//    Optional<AttributeDefinitionEntity> findByNameAndPortalId(String name, Long portalId);
 
 }

@@ -1,6 +1,5 @@
 package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -30,7 +30,7 @@ public class ProductEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AttributeValueEntity> attributes;
+    @OneToMany(mappedBy = "product")
+    private Set<PortalProductAttributeValueEntity> attributeValues = new HashSet<>();
 
 }

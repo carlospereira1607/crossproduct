@@ -7,11 +7,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -35,8 +39,7 @@ public class AttributeValueEntity {
     @JoinColumn(name = "attribute_definition_id", nullable = false)
     private AttributeDefinitionEntity definition;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private ProductEntity product;
+    @OneToMany(mappedBy = "attributeValue")
+    private Set<PortalProductAttributeValueEntity> portalProductLinks = new HashSet<>();
 
 }

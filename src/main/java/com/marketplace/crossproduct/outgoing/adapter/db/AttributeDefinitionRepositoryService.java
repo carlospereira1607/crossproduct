@@ -24,8 +24,10 @@ public class AttributeDefinitionRepositoryService implements AttributeDefinition
 
     @Override
     public Optional<AttributeDefinition> findByPortalIdAndName(final Long portalId, final String name) {
-        var existingAttributeDefinition = attributeDefinitionEntityRepository.findByNameAndPortalId(name, portalId);
-        return existingAttributeDefinition.map(attributeDefinitionEntityMapper::toAttributeDefinition);
+        //TODO
+        //var existingAttributeDefinition = attributeDefinitionEntityRepository.findByNameAndPortalId(name, portalId);
+        //return existingAttributeDefinition.map(attributeDefinitionEntityMapper::toAttributeDefinition);
+        return Optional.empty();
     }
 
     @Override

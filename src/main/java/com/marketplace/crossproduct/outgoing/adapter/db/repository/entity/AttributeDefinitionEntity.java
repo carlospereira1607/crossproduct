@@ -52,8 +52,4 @@ public class AttributeDefinitionEntity {
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttributeValueEntity> values;
 
-    @ManyToOne
-    @JoinColumn(name = "portal_id", nullable = false)
-    private PortalEntity portal;
-
 }

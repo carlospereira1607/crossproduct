@@ -13,7 +13,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -33,7 +35,6 @@ public class PortalEntity {
     @OneToMany(mappedBy = "portal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserEntity> users;
 
-    @OneToMany(mappedBy = "portal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AttributeDefinitionEntity> attributeDefinitionEntities;
-
+    @OneToMany(mappedBy = "portal")
+    private Set<PortalProductAttributeValueEntity> attributeValues = new HashSet<>();
 }
