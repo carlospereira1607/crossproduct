@@ -6,12 +6,14 @@ import com.marketplace.crossproduct.core.service.ProductService;
 import com.marketplace.crossproduct.core.usecase.UseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class GetProductStandardAttributesUseCase implements UseCase<GetProductStandardAttributesInput, GetProductStandardAttributesOutput> {
 
     private final ProductService productService;

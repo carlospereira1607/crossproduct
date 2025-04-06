@@ -8,4 +8,6 @@ public interface PortalPortRepository {
 
     Optional<Portal> findById(final Long id);
 
+    Portal save(final String name);
+
 }

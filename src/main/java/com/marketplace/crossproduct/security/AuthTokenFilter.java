@@ -34,7 +34,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         try {
-
             String uri = request.getRequestURI();
             if (uri.equals("/api/auth")) {
                 filterChain.doFilter(request, response);

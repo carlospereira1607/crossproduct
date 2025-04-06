@@ -60,9 +60,10 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/attribute/specificationValue").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
                                                                                                    Role.PORTAL_ADMIN.name())
 
-                                .requestMatchers("/api/auth/create").hasAuthority(Role.PLATFORM_ADMIN.name())
-                                .requestMatchers("/api/auth/login").permitAll()
+                                .requestMatchers("/api/auth").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
 
+                                .requestMatchers("/api/portal").hasAnyAuthority(Role.PLATFORM_ADMIN.name())
                                 .requestMatchers("/api/portal/**").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
                                                                                              Role.PORTAL_ADMIN.name(),
                                                                                              Role.PORTAL_USER.name())

@@ -1,14 +1,14 @@
 package com.marketplace.crossproduct.core.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Converter
 public class StringSetConverter implements AttributeConverter<Set<String>, String> {
@@ -26,11 +26,9 @@ public class StringSetConverter implements AttributeConverter<Set<String>, Strin
 
     @Override
     public Set<String> convertToEntityAttribute(String dbData) {
-        try {
-            if (dbData == null || dbData.isBlank()) return new HashSet<>();
-            return mapper.readValue(dbData, new TypeReference<>() {});
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Error reading JSON to set", e);
-        }
+        if (dbData == null || dbData.isBlank()) return new HashSet<>();
+        return Arrays.stream(dbData.split(","))
+                .map(String::trim)
+                .collect(Collectors.toSet());
     }
 }

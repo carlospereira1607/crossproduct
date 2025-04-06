@@ -24,7 +24,7 @@ public class AuthController {
     private final AuthenticateUserUseCase authenticateUserUseCase;
     private final CreateUserUseCase createUserUseCase;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<CreateUserResponseDto> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
         var createUserInput = CreateUserInput.builder()
                 .username(createUserRequestDto.username())

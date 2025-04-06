@@ -41,8 +41,8 @@ class ProductPortRepositoryServiceTest {
     @Test
     void testGetByPortalId_Success() {
         var portalId = 1L;
-        var productEntity1 = new ProductEntity(1L, "Product 1", Collections.emptySet());
-        var productEntity2 = new ProductEntity(2L, "Product 2", Collections.emptySet());
+        var productEntity1 = new ProductEntity(1L, "Product 1");
+        var productEntity2 = new ProductEntity(2L, "Product 2");
         var productEntities = new ArrayList<ProductEntity>();
         productEntities.add(productEntity1);
         productEntities.add(productEntity2);
@@ -100,7 +100,7 @@ class ProductPortRepositoryServiceTest {
     @Test
     void testGetById_productFound() {
         var productId = 1L;
-        var productEntity = new ProductEntity(productId, "Product A", Set.of(AttributeValueEntity.builder().build()));
+        var productEntity = new ProductEntity(productId, "Product A");
         var product = new Product(productId, "Product A", Set.of(AttributeValue.builder().build()));
 
         when(productEntityRepository.findById(productId)).thenReturn(Optional.of(productEntity));

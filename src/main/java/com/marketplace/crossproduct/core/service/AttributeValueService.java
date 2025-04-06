@@ -7,12 +7,14 @@ import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.port.db.AttributeValuePortRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AttributeValueService {
 
     private final AttributeValuePortRepository attributeValuePortRepository;
