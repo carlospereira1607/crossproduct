@@ -4,6 +4,7 @@ import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.model.Portal;
 import com.marketplace.crossproduct.core.model.Product;
+import com.marketplace.crossproduct.core.service.AttributeValueService;
 import com.marketplace.crossproduct.core.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ class GetProductStandardAttributesUseCaseTest {
     @Mock
     private ProductService productService;
 
+    @Mock
+    private AttributeValueService attributeValueService;
+
     @InjectMocks
     private GetProductStandardAttributesUseCase getProductStandardAttributesUseCase;
 
@@ -50,7 +54,23 @@ class GetProductStandardAttributesUseCaseTest {
     void testExecute_success() {
         var productId = 1L;
         var input = new GetProductStandardAttributesInput(productId);
+        var values = new HashSet<AttributeValue>();
+        values.add(AttributeValue.builder()
+                        .value("some value")
+                        .isStandard(true)
+                .build());
+        values.add(AttributeValue.builder()
+                .value("another value")
+                .isStandard(true)
+                .build());
+        values.add(AttributeValue.builder()
+                .value("customized value")
+                .isStandard(false)
+                .build());
+
+
         when(productService.findById(productId)).thenReturn(Optional.of(product));
+        when(attributeValueService.findByProductId(productId)).thenReturn(values);
 
         var output = getProductStandardAttributesUseCase.execute(input);
 

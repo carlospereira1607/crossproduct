@@ -12,8 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -43,7 +43,7 @@ class ProductPortRepositoryServiceTest {
         var portalId = 1L;
         var productEntity1 = new ProductEntity(1L, "Product 1", Collections.emptySet());
         var productEntity2 = new ProductEntity(2L, "Product 2", Collections.emptySet());
-        var productEntities = new HashSet<ProductEntity>();
+        var productEntities = new ArrayList<ProductEntity>();
         productEntities.add(productEntity1);
         productEntities.add(productEntity2);
 
@@ -69,7 +69,7 @@ class ProductPortRepositoryServiceTest {
     @Test
     void testGetByPortalId_NoProductsFound() {
         var portalId = 1L;
-        var productEntities = new HashSet<ProductEntity>();
+        var productEntities = new ArrayList<ProductEntity>();
 
         when(productEntityRepository.findAllByPortalId(portalId)).thenReturn(productEntities);
 
@@ -86,7 +86,7 @@ class ProductPortRepositoryServiceTest {
     void testGetByPortalId_EmptyResult() {
         var portalId = 1L;
 
-        when(productEntityRepository.findAllByPortalId(portalId)).thenReturn(Collections.emptySet());
+        when(productEntityRepository.findAllByPortalId(portalId)).thenReturn(Collections.emptyList());
 
         var result = productPortRepositoryService.getByPortalId(portalId);
 

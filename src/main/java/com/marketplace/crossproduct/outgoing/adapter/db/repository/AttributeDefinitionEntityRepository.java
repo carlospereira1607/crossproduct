@@ -1,7 +1,5 @@
 package com.marketplace.crossproduct.outgoing.adapter.db.repository;
 
-import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
-import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeDefinitionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
