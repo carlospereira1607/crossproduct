@@ -106,7 +106,7 @@ class ProductControllerTest {
         when(productMapper.toGetProductDetailsResponseDto(any(Product.class)))
                 .thenReturn(productDetails);
 
-        var response = productController.getProductDetails(1L, 1L, 1L);
+        var response = productController.getProductDetails(1L, 1L);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
         assertEquals(productDetails, response.getBody());

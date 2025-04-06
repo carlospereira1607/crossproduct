@@ -39,12 +39,11 @@ public class ProductController {
         return ResponseEntity.ok().body(productMapper.toCreateProductResponseDto(product));
     }
 
-    @GetMapping("/details/{productId}/{portalId}/{definitionId}")
+    @GetMapping("/details/{productId}/{portalId}")
     public ResponseEntity<GetProductDetailsResponseDto> getProductDetails(@PathVariable Long productId,
-                                                                          @PathVariable Long portalId,
-                                                                          @PathVariable Long definitionId)  {
+                                                                          @PathVariable Long portalId)  {
         //TODO validate portal id and role again
-        var input = GetProductDetailsInput.builder().productId(productId).portalId(portalId).definitionId(definitionId).build();
+        var input = GetProductDetailsInput.builder().productId(productId).portalId(portalId).build();
         var product = getProductDetailsUseCase.execute(input);
         var response = productMapper.toGetProductDetailsResponseDto(product.getProduct());
 

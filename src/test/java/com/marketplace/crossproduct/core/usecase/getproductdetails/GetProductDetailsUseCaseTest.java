@@ -39,7 +39,7 @@ class GetProductDetailsUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        input = new GetProductDetailsInput(1L, 1L, 1L);
+        input = new GetProductDetailsInput(1L, 1L);
     }
 
     @Test
