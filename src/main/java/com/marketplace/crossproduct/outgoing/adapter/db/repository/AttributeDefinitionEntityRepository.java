@@ -15,14 +15,14 @@ public interface AttributeDefinitionEntityRepository extends JpaRepository<Attri
         WHERE name = :name
           AND definition_type = :definitionType
           AND specification_type = :specificationType
-          AND value = :value
+          AND specificationValue = :specificationValue
           AND selectable_options = :selectableOptions
     """, nativeQuery = true)
     Optional<AttributeDefinitionEntity> findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(
             @Param("name") String name,
             @Param("definitionType") String definitionType,
             @Param("specificationType") String specificationType,
-            @Param("value") String value,
+            @Param("specificationValue") String value,
             @Param("selectableOptions") Set<String> selectableOptions
     );
 

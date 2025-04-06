@@ -7,5 +7,5 @@ import java.util.Set;
 
 public record AttributeDefinitionDto(Long id, String name, AttributeDefinitionType definitionType,
                                      AttributeDefinitionSpecificationType specificationType,
-                                     String value, Set<String> selectableOptions) {
+                                     String specificationValue, Set<String> selectableOptions) {
 }

@@ -46,7 +46,7 @@ class AttributeDefinitionRepositoryServiceTest {
                 .name("Test Attribute")
                 .definitionType(AttributeDefinitionType.TEXT)
                 .specificationType(AttributeDefinitionSpecificationType.TEXT_FORMAT)
-                .value("Test Value")
+                .specificationValue("Test Value")
                 .selectableOptions(new HashSet<>(Arrays.asList("option1", "option2")))
                 .build();
 
@@ -55,7 +55,7 @@ class AttributeDefinitionRepositoryServiceTest {
                 .name("Test Attribute")
                 .definitionType(AttributeDefinitionType.TEXT)
                 .specificationType(AttributeDefinitionSpecificationType.TEXT_FORMAT)
-                .value("Test Value")
+                .specificationValue("Test Value")
                 .selectableOptions(new HashSet<>(Arrays.asList("option1", "option2")))
                 .build();
     }

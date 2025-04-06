@@ -41,17 +41,15 @@ public class AttributeController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/value")
+    @PostMapping("/specificationValue")
     public ResponseEntity<CreateAttributeValueResponseDto> createAttributeValue(@RequestBody CreateAttributeValueRequestDto request) {
-        //TODO if role is PLATFOM_ADMIN then value is not standard
-
         var input = createAttributeValueMapper.toCreateAttributeValueInput(request);
         var result = createAttributeValueUseCase.execute(input);
         var response = createAttributeValueMapper.toCreateAttributeValueResponseDto(result);
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping("/value")
+    @PutMapping("/specificationValue")
     public ResponseEntity<UpdateAttributeValueResponseDto> updateAttributeValue(@RequestBody UpdateAttributeValueRequestDto request) {
         var input = updateAttributeValueMapper.toUpdateAttributeValueInput(request);
         var result = updateAttributeValueUseCase.execute(input);

@@ -56,15 +56,15 @@ class GetProductStandardAttributesUseCaseTest {
         var input = new GetProductStandardAttributesInput(productId);
         var values = new HashSet<AttributeValue>();
         values.add(AttributeValue.builder()
-                        .value("some value")
+                        .value("some specificationValue")
                         .isStandard(true)
                 .build());
         values.add(AttributeValue.builder()
-                .value("another value")
+                .value("another specificationValue")
                 .isStandard(true)
                 .build());
         values.add(AttributeValue.builder()
-                .value("customized value")
+                .value("customized specificationValue")
                 .isStandard(false)
                 .build());
 

@@ -13,7 +13,7 @@ import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDet
 import com.marketplace.crossproduct.core.usecase.getproductstandardattributes.GetProductStandardAttributesOutput;
 import com.marketplace.crossproduct.core.usecase.getproductstandardattributes.GetProductStandardAttributesUseCase;
 import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResponseDto;
-import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResquestDto;
+import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductRequestDto;
 import com.marketplace.crossproduct.incoming.dto.getproductdetails.GetProductDetailsResponseDto;
 import com.marketplace.crossproduct.incoming.mapper.ProductMapper;
 import org.junit.jupiter.api.Test;
@@ -114,7 +114,7 @@ class ProductControllerTest {
 
     @Test
     void testCreateProduct_shouldReturnOk() {
-        var requestDto = new CreateProductResquestDto("Test Product");
+        var requestDto = new CreateProductRequestDto("Test Product");
         var useCaseInput = CreateProductUseCaseInput.builder().name("Test Product").build();
         var product = new Product(1L, "Test Product", null);
         var responseDto = new CreateProductResponseDto(1L, "Test Product");

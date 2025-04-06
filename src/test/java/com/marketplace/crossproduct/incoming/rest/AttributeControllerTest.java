@@ -69,7 +69,7 @@ class AttributeControllerTest {
                 .name("Color")
                 .definitionType("TEXT")
                 .specificationType("TEXT_FORMAT")
-                .value("something")
+                .specificationValue("something")
                 .selectableOptions(Set.of("Red", "Blue"))
                 .build();
 
@@ -111,7 +111,7 @@ class AttributeControllerTest {
                 .name("Color")
                 .definitionType("TEXT")
                 .specificationType("TEXT_FORMAT")
-                .value("something")
+                .specificationValue("something")
                 .selectableOptions(Set.of("Red", "Blue"))
                 .build();
 
@@ -153,7 +153,7 @@ class AttributeControllerTest {
         var definitionDto = new AttributeDefinitionDto(null, null, null, null, null, null);
         var portalDto = new PortalDto(null, null);
         var productDto = new ProductDto(null, null);
-        var responseDto = new CreateAttributeValueResponseDto("value", true, portalDto, productDto, definitionDto);
+        var responseDto = new CreateAttributeValueResponseDto("specificationValue", true, portalDto, productDto, definitionDto);
 
         when(createAttributeValueMapper.toCreateAttributeValueInput(requestDto)).thenReturn(input);
         when(createAttributeValueUseCase.execute(input)).thenReturn(output);

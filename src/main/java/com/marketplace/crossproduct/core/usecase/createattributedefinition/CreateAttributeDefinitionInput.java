@@ -12,6 +12,6 @@ public class CreateAttributeDefinitionInput extends UseCaseInput {
     private String name;
     private String definitionType;
     private String specificationType;
-    private String value;
+    private String specificationValue;
     private Set<String> selectableOptions;
 }

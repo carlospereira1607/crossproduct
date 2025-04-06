@@ -93,7 +93,7 @@ class UpdateAttributeValueUseCaseTest {
             updateAttributeValueUseCase.execute(input);
         });
 
-        assertEquals("Could not find attribute value to update", exception.getMessage());
+        assertEquals("Could not find attribute specificationValue to update", exception.getMessage());
     }
 
     @Test
@@ -106,7 +106,7 @@ class UpdateAttributeValueUseCaseTest {
             updateAttributeValueUseCase.execute(input);
         });
 
-        assertEquals("Could not find attribute definition to set for value", exception.getMessage());
+        assertEquals("Could not find attribute definition to set for specificationValue", exception.getMessage());
     }
 
     @Test
@@ -120,7 +120,7 @@ class UpdateAttributeValueUseCaseTest {
             updateAttributeValueUseCase.execute(input);
         });
 
-        assertEquals("Could not find portal to set for value", exception.getMessage());
+        assertEquals("Could not find portal to set for specificationValue", exception.getMessage());
     }
 
     @Test
@@ -135,7 +135,7 @@ class UpdateAttributeValueUseCaseTest {
             updateAttributeValueUseCase.execute(input);
         });
 
-        assertEquals("Could not find product to set for value", exception.getMessage());
+        assertEquals("Could not find product to set for specificationValue", exception.getMessage());
     }
 
 }

@@ -20,20 +20,20 @@ public class CreateAttributeDefinitionUseCase implements UseCase<CreateAttribute
         var definitionType = AttributeDefinitionType.valueOf(input.getDefinitionType());
         var specificationType = AttributeDefinitionSpecificationType.valueOf(input.getSpecificationType());
         var existingDefinition = attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(input.getName(), definitionType,
-                                                                                                                                             specificationType, input.getValue(),input.getSelectableOptions());
+                                                                                                                                             specificationType, input.getSpecificationValue(),input.getSelectableOptions());
         if(existingDefinition.isPresent()) {
             log.error("Attribute definition {} {} already exists", input.getName(), input.getDefinitionType());
             throw new RuntimeException("Duplicated attribute definition");
         }
 
-        var savedDefinition = attributeDefinitionService.save(input.getName(), definitionType, specificationType, input.getValue(), input.getSelectableOptions());
+        var savedDefinition = attributeDefinitionService.save(input.getName(), definitionType, specificationType, input.getSpecificationValue(), input.getSelectableOptions());
 
         return CreateAttributeDefinitionOutput.builder()
                 .id(savedDefinition.getId())
                 .name(savedDefinition.getName())
                 .definitionType(savedDefinition.getDefinitionType())
                 .specificationType(savedDefinition.getSpecificationType())
-                .value(savedDefinition.getValue())
+                .value(savedDefinition.getSpecificationValue())
                 .selectableOptions(savedDefinition.getSelectableOptions())
                 .build();
     }

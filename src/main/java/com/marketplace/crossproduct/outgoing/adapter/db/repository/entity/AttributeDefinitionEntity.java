@@ -40,8 +40,8 @@ public class AttributeDefinitionEntity {
     @Column(name = "definition_type", nullable = false)
     private AttributeDefinitionType definitionType;
 
-    @Column(nullable = false)
-    private String value;
+    @Column(name = "specification_value", nullable = false)
+    private String specificationValue;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "specification_type", nullable = false)

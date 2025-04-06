@@ -18,13 +18,13 @@ public class AttributeDefinitionService {
 
     public AttributeDefinition save(final String name, final AttributeDefinitionType definitionType,
                                     final AttributeDefinitionSpecificationType specificationType,
-                                    final String value,
+                                    final String specificationValue,
                                     final Set<String> selectableOptions) {
         var attributeDefinition = AttributeDefinition.builder()
                 .name(name)
                 .definitionType(definitionType)
                 .specificationType(specificationType)
-                .value(value)
+                .specificationValue(specificationValue)
                 .selectableOptions(selectableOptions)
                 .build();
         return attributeDefinitionPortRepository.save(attributeDefinition);
@@ -32,9 +32,9 @@ public class AttributeDefinitionService {
 
     public Optional<AttributeDefinition> findByNameAndTypeAndSpecificationIdAndSelectableOptions(final String name, final AttributeDefinitionType definitionType,
                                                                                                  final AttributeDefinitionSpecificationType specificationType,
-                                                                                                 final String value,
+                                                                                                 final String specificationValue,
                                                                                                  final Set<String> selectableOptions) {
-        return attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(name, definitionType, specificationType, value, selectableOptions);
+        return attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(name, definitionType, specificationType, specificationValue, selectableOptions);
     }
 
     public Optional<AttributeDefinition> findById(final Long id) {
