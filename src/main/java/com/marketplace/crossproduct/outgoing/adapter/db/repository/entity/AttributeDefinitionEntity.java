@@ -1,8 +1,10 @@
 package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
+import com.marketplace.crossproduct.core.converter.StringSetConverter;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -43,10 +45,15 @@ public class AttributeDefinitionEntity {
     @JoinColumn(name = "specification_id", nullable = false)
     private AttributeDefinitionSpecificationEntity specification;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AttributeDefinitionSelectableOption> selectableOptions;
+    @Convert(converter = StringSetConverter.class)
+    @Column(name = "selectable_options", columnDefinition = "TEXT")
+    private Set<String> selectableOptions;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttributeValueEntity> values;
+
+    @ManyToOne
+    @JoinColumn(name = "portal_id", nullable = false)
+    private PortalEntity portal;
 
 }

@@ -1,8 +1,5 @@
 package com.marketplace.crossproduct.core.model;
 
-import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeDefinitionSelectableOption;
-import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeDefinitionSpecificationEntity;
-import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeValueEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,10 +19,12 @@ public class AttributeDefinition {
 
     private AttributeDefinitionType type;
 
-    private AttributeDefinitionSpecificationEntity specification;
+    private AttributeDefinitionSpecification specification;
 
-    private Set<AttributeDefinitionSelectableOption> selectableOptions;
+    private Set<String> selectableOptions;
 
-    private Set<AttributeValueEntity> values;
+    private Set<AttributeValue> values;
+
+    private Portal portal;
 
 }
