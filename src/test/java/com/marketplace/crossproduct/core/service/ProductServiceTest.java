@@ -1,5 +1,6 @@
 package com.marketplace.crossproduct.core.service;
 
+import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.port.db.ProductPortRepository;
 import org.junit.jupiter.api.Test;
@@ -9,8 +10,11 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
@@ -59,6 +63,35 @@ class ProductServiceTest {
         assertTrue(result.isEmpty());
 
         verify(productPortRepository).getByPortalId(portalId);
+        verifyNoMoreInteractions(productPortRepository);
+    }
+
+    @Test
+    void testGetById_productFound() {
+        var productId = 1L;
+        var product = new Product(1L, "Product A", Set.of(new AttributeValue()));
+        when(productPortRepository.getById(productId)).thenReturn(Optional.of(product));
+
+        var result = productService.getById(productId);
+
+        assertTrue(result.isPresent(), "Product should be present");
+        assertEquals(productId, result.get().getId(), "Product ID should match");
+        assertEquals("Product A", result.get().getName(), "Product name should match");
+
+        verify(productPortRepository).getById(productId);
+        verifyNoMoreInteractions(productPortRepository);
+    }
+
+    @Test
+    void testGetById_productNotFound() {
+        var productId = 1L;
+        when(productPortRepository.getById(productId)).thenReturn(Optional.empty());
+
+        var result = productService.getById(productId);
+
+        assertFalse(result.isPresent(), "Product should not be present");
+
+        verify(productPortRepository).getById(productId);
         verifyNoMoreInteractions(productPortRepository);
     }
 

@@ -7,6 +7,7 @@ import com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper.Produc
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,11 @@ public class ProductPortRepositoryService implements ProductPortRepository {
 
     private final ProductEntityRepository productEntityRepository;
     private final ProductEntityMapper productEntityMapper;
+
+    @Override
+    public Optional<Product> getById(final Long id) {
+         return productEntityRepository.findById(id).map(productEntityMapper::toProduct);
+    }
 
     @Override
     public Set<Product> getByPortalId(final Long portalId) {

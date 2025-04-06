@@ -13,7 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -31,6 +31,6 @@ public class ProductEntity {
     private String name;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AttributeValueEntity> attributes;
+    private Set<AttributeValueEntity> attributes;
 
 }

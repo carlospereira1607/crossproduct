@@ -1,8 +1,12 @@
 package com.marketplace.crossproduct.incoming.rest;
 
+import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsInput;
+import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsUseCase;
 import com.marketplace.crossproduct.core.usecase.getproductsbyportal.GetProductsByPortalInput;
 import com.marketplace.crossproduct.core.usecase.getproductsbyportal.GetProductsByPortalUseCase;
 import com.marketplace.crossproduct.incoming.dto.getportalproducts.ProductResponseDto;
+import com.marketplace.crossproduct.incoming.dto.getproductdetails.GetProductDetailsResponseDto;
+import com.marketplace.crossproduct.incoming.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,17 @@ import java.util.stream.Collectors;
 public class PortalController {
 
     private final GetProductsByPortalUseCase getProductsByPortalUseCase;
+    private final GetProductDetailsUseCase getProductDetailsUseCase;
+    private final ProductMapper productMapper;
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<GetProductDetailsResponseDto> getProductDetails(@PathVariable Long productId)  {
+        var input = GetProductDetailsInput.builder().productId(productId).build();
+        var product = getProductDetailsUseCase.execute(input);
+        var response = productMapper.toGetProductDetailsResponseDto(product.getProduct());
+
+        return ResponseEntity.ok().body(response);
+    }
 
     @GetMapping("/{portalId}/products")
     public ResponseEntity<Set<ProductResponseDto>> getProducts(@PathVariable Long portalId)  {

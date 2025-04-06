@@ -1,7 +1,9 @@
 package com.marketplace.crossproduct.outgoing.adapter.db;
 
+import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.ProductEntityRepository;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeValueEntity;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.ProductEntity;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper.ProductEntityMapper;
 import org.junit.jupiter.api.Test;
@@ -12,12 +14,16 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -35,8 +41,8 @@ class ProductPortRepositoryServiceTest {
     @Test
     void testGetByPortalId_Success() {
         var portalId = 1L;
-        var productEntity1 = new ProductEntity(1L, "Product 1", Collections.emptyList());
-        var productEntity2 = new ProductEntity(2L, "Product 2", Collections.emptyList());
+        var productEntity1 = new ProductEntity(1L, "Product 1", Collections.emptySet());
+        var productEntity2 = new ProductEntity(2L, "Product 2", Collections.emptySet());
         var productEntities = new HashSet<ProductEntity>();
         productEntities.add(productEntity1);
         productEntities.add(productEntity2);
@@ -88,6 +94,41 @@ class ProductPortRepositoryServiceTest {
         assertTrue(result.isEmpty());
 
         verify(productEntityRepository).findAllByPortalId(portalId);
+        verifyNoInteractions(productEntityMapper);
+    }
+
+    @Test
+    void testGetById_productFound() {
+        var productId = 1L;
+        var productEntity = new ProductEntity(productId, "Product A", Set.of(new AttributeValueEntity()));
+        var product = new Product(productId, "Product A", Set.of(new AttributeValue()));
+
+        when(productEntityRepository.findById(productId)).thenReturn(Optional.of(productEntity));
+        when(productEntityMapper.toProduct(productEntity)).thenReturn(product);
+
+        var result = productPortRepositoryService.getById(productId);
+
+        assertTrue(result.isPresent(), "Product should be present");
+        assertEquals(productId, result.get().getId(), "Product ID should match");
+        assertEquals("Product A", result.get().getName(), "Product name should match");
+
+        verify(productEntityRepository).findById(productId);
+        verify(productEntityMapper).toProduct(productEntity);
+        verifyNoMoreInteractions(productEntityRepository, productEntityMapper);
+    }
+
+    @Test
+    void testGetById_productNotFound() {
+        var productId = 1L;
+
+        when(productEntityRepository.findById(productId)).thenReturn(Optional.empty());
+
+        var result = productPortRepositoryService.getById(productId);
+
+        assertFalse(result.isPresent(), "Product should not be present");
+
+        verify(productEntityRepository).findById(productId);
+        verifyNoMoreInteractions(productEntityRepository);
         verifyNoInteractions(productEntityMapper);
     }
 
