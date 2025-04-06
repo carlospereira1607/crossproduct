@@ -13,18 +13,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AttributeValueRepositoryService implements AttributeValuePortRepository {
 
-    private final AttributeValueEntityRepository attributeValueEntityRepository;
-    private final AttributeValueEntityMapper attributeValueEntityMapper;
+    private final AttributeValueEntityRepository repository;
+    private final AttributeValueEntityMapper mapper;
 
     @Override
-    public Optional<AttributeValue> findById(final Long id) {
-        return attributeValueEntityRepository.findById(id).map(attributeValueEntityMapper::toAttributeValue);
+    public Optional<AttributeValue> findByPortalProductDefinition(Long portalId, Long productId, Long definitionId) {
+        return repository.findByProductIdAndPortalIdAndDefinitionId(portalId, productId, definitionId).map(mapper::toAttributeValue);
     }
 
     @Override
-    public AttributeValue save(final AttributeValue attributeValue) {
-        var entity = attributeValueEntityMapper.toAttributeValueEntity(attributeValue);
-        return attributeValueEntityMapper.toAttributeValue(attributeValueEntityRepository.save(entity));
+    public AttributeValue save(final AttributeValue entry) {
+        var entity = mapper.toAttributeValueEntity(entry);
+        var result = repository.save(entity);
+        return mapper.toAttributeValue(result);
     }
-
 }

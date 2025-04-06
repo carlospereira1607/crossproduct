@@ -15,7 +15,7 @@ public class GetProductsByPortalUseCase implements UseCase<GetProductsByPortalIn
 
     @Override
     public GetProductsByPortalOutput execute(final GetProductsByPortalInput input) {
-        var products = productService.getByPortalId(input.getPortalId());
+        var products = productService.findByPortalId(input.getPortalId());
         var mappedProducts = products.stream().map(entry -> new ProductIdAndName(entry.getId(), entry.getName())).collect(Collectors.toSet());
         return new GetProductsByPortalOutput(mappedProducts);
     }

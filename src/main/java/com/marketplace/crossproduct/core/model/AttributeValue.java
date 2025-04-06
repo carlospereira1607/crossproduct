@@ -6,19 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class AttributeValue {
-
-    private Long id;
-
     private String value;
-
     private Boolean isStandard;
-
-    private AttributeDefinition definition;
-
+    private Portal portal;
     private Product product;
-
+    private AttributeDefinition definition;
 }

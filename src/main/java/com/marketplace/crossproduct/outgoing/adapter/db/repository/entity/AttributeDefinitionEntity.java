@@ -2,6 +2,7 @@ package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
 import com.marketplace.crossproduct.core.converter.StringSetConverter;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
+import com.marketplace.crossproduct.core.model.AttributeValue;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -50,10 +51,7 @@ public class AttributeDefinitionEntity {
     @Column(name = "selectable_options", columnDefinition = "TEXT")
     private Set<String> selectableOptions;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AttributeValueEntity> values;
-
-    @OneToMany(mappedBy = "definition")
-    private Set<PortalProductAttributeValueDefinitionEntity> portalProductValueLink = new HashSet<>();
+    @OneToMany(mappedBy = "definition", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AttributeValueEntity> attributes = new HashSet<>();
 
 }

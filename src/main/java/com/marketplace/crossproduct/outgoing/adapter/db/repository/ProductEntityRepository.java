@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Set;
 
-public interface ProductEntityRepository extends JpaRepository<ProductEntity, Long>  {
+public interface ProductEntityRepository extends JpaRepository<ProductEntity, Long> {
 
     @Query(value = "SELECT p.* FROM product p INNER JOIN attribute a ON a.product_id = p.id " +
             "INNER JOIN attribute_definition ad ON ad.id = a.attribute_definition_id " +

@@ -26,11 +26,11 @@ class PortalServiceTest {
     private PortalService portalService;
 
     @Test
-    void testGetById_found() {
+    void testFindById_found() {
         var expectedPortal = Portal.builder().id(1L).name("Test Portal").build();
         when(portalPortRepository.findById(expectedPortal.getId())).thenReturn(Optional.of(expectedPortal));
 
-        var existingPortal = portalService.getById(1L);
+        var existingPortal = portalService.findById(1L);
 
         assertTrue(existingPortal.isPresent());
         assertEquals(expectedPortal, existingPortal.get());
@@ -40,10 +40,10 @@ class PortalServiceTest {
     }
 
     @Test
-    void testGetById_notFound() {
+    void testFindById_notFound() {
         when(portalPortRepository.findById(999L)).thenReturn(Optional.empty());
 
-        var foundPortal = portalService.getById(999L);
+        var foundPortal = portalService.findById(999L);
 
         assertTrue(foundPortal.isEmpty());
 

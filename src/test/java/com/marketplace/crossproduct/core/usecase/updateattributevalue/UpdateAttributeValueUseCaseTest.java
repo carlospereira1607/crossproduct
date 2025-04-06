@@ -2,8 +2,13 @@ package com.marketplace.crossproduct.core.usecase.updateattributevalue;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
+import com.marketplace.crossproduct.core.model.Portal;
+import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.service.AttributeDefinitionService;
 import com.marketplace.crossproduct.core.service.AttributeValueService;
+import com.marketplace.crossproduct.core.service.PortalService;
+import com.marketplace.crossproduct.core.service.ProductService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,10 +19,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,135 +32,110 @@ class UpdateAttributeValueUseCaseTest {
     @Mock
     private AttributeDefinitionService attributeDefinitionService;
 
+    @Mock
+    private PortalService portalService;
+
+    @Mock
+    private ProductService productService;
+
     @InjectMocks
     private UpdateAttributeValueUseCase updateAttributeValueUseCase;
 
-    @Test
-    void testExecute_successfulUpdate() {
-        var input = UpdateAttributeValueInput.builder()
-                .attributeValueId(1L)
-                .attributeDefinitionId(2L)
-                .value("Updated Value")
-                .isStandard(true)
-                .build();
+    private UpdateAttributeValueInput input;
+    private AttributeValue existingValue;
+    private AttributeDefinition definition;
+    private Portal portal;
+    private Product product;
 
-        var oldDefinition = AttributeDefinition.builder().id(1L).build();
-        var newDefinition = AttributeDefinition.builder().id(2L).build();
+    @BeforeEach
+    void setUp() {
+        input = new UpdateAttributeValueInput("newValue",true, 1L, 1L, 1L);
 
-        var existingValue = AttributeValue.builder()
-                .id(1L)
-                .value("Old Value")
-                .isStandard(false)
-                .definition(oldDefinition)
-                .build();
+        definition = new AttributeDefinition();
+        portal = new Portal();
+        product = new Product();
 
-        var updatedValue = AttributeValue.builder()
-                .id(1L)
-                .value("Updated Value")
-                .isStandard(true)
-                .definition(newDefinition)
-                .build();
-
-        when(attributeValueService.findById(1L)).thenReturn(Optional.of(existingValue));
-        when(attributeDefinitionService.findById(2L)).thenReturn(Optional.of(newDefinition));
-        when(attributeValueService.update(any())).thenReturn(updatedValue);
-
-        var result = updateAttributeValueUseCase.execute(input);
-
-        assertEquals(updatedValue.getId(), result.getId());
-        assertEquals(updatedValue.getValue(), result.getValue());
-        assertEquals(updatedValue.getIsStandard(), result.isStandard());
-        assertEquals(updatedValue.getDefinition(), result.getDefinition());
-
-        verify(attributeValueService).findById(1L);
-        verify(attributeDefinitionService).findById(2L);
-        verify(attributeValueService).update(any());
-
-        verifyNoMoreInteractions(attributeValueService, attributeDefinitionService);
+        existingValue = new AttributeValue();
+        existingValue.setDefinition(definition);
+        existingValue.setPortal(portal);
+        existingValue.setProduct(product);
+        existingValue.setValue("oldValue");
+        existingValue.setIsStandard(false);
     }
 
     @Test
-    void testExecute_attributeValueNotFound_throwsException() {
-        when(attributeValueService.findById(1L)).thenReturn(Optional.empty());
+    void testExecute_SuccessfullyUpdates() {
+        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
+                .thenReturn(Optional.of(existingValue));
 
-        var input = UpdateAttributeValueInput.builder()
-                .attributeValueId(1L)
-                .attributeDefinitionId(2L)
-                .value("value")
-                .isStandard(true)
-                .build();
+        when(attributeDefinitionService.findById(input.getDefinitionId())).thenReturn(Optional.of(definition));
+        when(portalService.findById(input.getPortalId())).thenReturn(Optional.of(portal));
+        when(productService.findById(input.getProductId())).thenReturn(Optional.of(product));
+        when(attributeValueService.update(existingValue)).thenReturn(existingValue);
 
-        var ex = assertThrows(RuntimeException.class, () -> updateAttributeValueUseCase.execute(input));
+        UpdateAttributeValueOutput result = updateAttributeValueUseCase.execute(input);
 
-        assertEquals("Could not find attribute value to update", ex.getMessage());
+        assertEquals("newValue", result.getValue());
+        assertTrue(result.isStandard());
+        assertEquals(portal, result.getPortal());
+        assertEquals(product, result.getProduct());
+        assertEquals(definition, result.getDefinition());
 
-        verify(attributeValueService).findById(1L);
-        verifyNoMoreInteractions(attributeValueService);
-        verifyNoInteractions(attributeDefinitionService);
+        verify(attributeValueService).update(existingValue);
     }
 
     @Test
-    void testExecute_newDefinitionNotFound_throwsException() {
-        var oldDefinition = AttributeDefinition.builder().id(1L).build();
-        var existingValue = AttributeValue.builder()
-                .id(1L)
-                .value("Old")
-                .isStandard(false)
-                .definition(oldDefinition)
-                .build();
+    void testExecute_ThrowsExceptionWhenAttributeValueNotFound() {
+        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
+                .thenReturn(Optional.empty());
 
-        when(attributeValueService.findById(1L)).thenReturn(Optional.of(existingValue));
-        when(attributeDefinitionService.findById(2L)).thenReturn(Optional.empty());
+        var exception = assertThrows(RuntimeException.class, () -> {
+            updateAttributeValueUseCase.execute(input);
+        });
 
-        var input = UpdateAttributeValueInput.builder()
-                .attributeValueId(1L)
-                .attributeDefinitionId(2L)
-                .value("new")
-                .isStandard(true)
-                .build();
-
-        RuntimeException ex = assertThrows(RuntimeException.class, () ->
-                updateAttributeValueUseCase.execute(input));
-
-        assertEquals("Could not find attribute definition to set for value", ex.getMessage());
-
-        verify(attributeValueService).findById(1L);
-        verify(attributeDefinitionService).findById(2L);
-        verifyNoMoreInteractions(attributeValueService, attributeDefinitionService);
+        assertEquals("Could not find attribute value to update", exception.getMessage());
     }
 
     @Test
-    void testExecute_noChanges_makesNoUpdate() {
-        var definition = AttributeDefinition.builder().id(1L).build();
+    void testExecute_ThrowsExceptionWhenDefinitionNotFound() {
+        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
+                .thenReturn(Optional.of(existingValue));
+        when(attributeDefinitionService.findById(input.getDefinitionId())).thenReturn(Optional.empty());
 
-        var existingValue = AttributeValue.builder()
-                .id(1L)
-                .value("Same Value")
-                .isStandard(true)
-                .definition(definition)
-                .build();
+        var exception = assertThrows(RuntimeException.class, () -> {
+            updateAttributeValueUseCase.execute(input);
+        });
 
-        var input = UpdateAttributeValueInput.builder()
-                .attributeValueId(1L)
-                .attributeDefinitionId(1L)
-                .value("Same Value")
-                .isStandard(true)
-                .build();
-        when(attributeDefinitionService.findById(1L)).thenReturn(Optional.of(definition));
-        when(attributeValueService.findById(1L)).thenReturn(Optional.of(existingValue));
-        when(attributeValueService.update(any())).thenReturn(existingValue);
+        assertEquals("Could not find attribute definition to set for value", exception.getMessage());
+    }
 
-        var result = updateAttributeValueUseCase.execute(input);
+    @Test
+    void testExecute_ThrowsExceptionWhenPortalNotFound() {
+        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
+                .thenReturn(Optional.of(existingValue));
+        when(attributeDefinitionService.findById(input.getDefinitionId())).thenReturn(Optional.of(definition));
+        when(portalService.findById(input.getPortalId())).thenReturn(Optional.empty());
 
-        assertEquals(existingValue.getId(), result.getId());
-        assertEquals(existingValue.getValue(), result.getValue());
-        assertEquals(existingValue.getIsStandard(), result.isStandard());
-        assertEquals(existingValue.getDefinition(), result.getDefinition());
+        var exception = assertThrows(RuntimeException.class, () -> {
+            updateAttributeValueUseCase.execute(input);
+        });
 
-        verify(attributeValueService).findById(1L);
-        verify(attributeValueService).update(any());
-        verify(attributeDefinitionService).findById(1L);
-        verifyNoMoreInteractions(attributeDefinitionService, attributeValueService);
+        assertEquals("Could not find portal to set for value", exception.getMessage());
+    }
+
+    @Test
+    void testExecute_ThrowsExceptionWhenProductNotFound() {
+        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
+                .thenReturn(Optional.of(existingValue));
+        when(attributeDefinitionService.findById(input.getDefinitionId())).thenReturn(Optional.of(definition));
+        when(portalService.findById(input.getPortalId())).thenReturn(Optional.of(portal));
+        when(productService.findById(input.getProductId())).thenReturn(Optional.empty());
+
+        var exception = assertThrows(RuntimeException.class, () -> {
+            updateAttributeValueUseCase.execute(input);
+        });
+
+        assertEquals("Could not find product to set for value", exception.getMessage());
     }
 
 }

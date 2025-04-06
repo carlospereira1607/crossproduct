@@ -14,11 +14,11 @@ public class ProductService {
 
     private final ProductPortRepository productPortRepository;
 
-    public Optional<Product> getById(final Long id) {
+    public Optional<Product> findById(final Long id) {
         return productPortRepository.getById(id);
     }
 
-    public Set<Product> getByPortalId(final Long portalId) {
+    public Set<Product> findByPortalId(final Long portalId) {
         return productPortRepository.getByPortalId(portalId);
     }
 }

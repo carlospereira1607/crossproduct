@@ -1,41 +1,47 @@
 package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
+@Data
 @Builder
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Entity
 @Table(name = "attribute_value")
 public class AttributeValueEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private PortalProductAttributeDefinitionId id;
 
     @Column(nullable = false)
     private String value;
 
-    @Column(nullable = false)
+    @Column(name = "is_standard", nullable = false)
     private Boolean isStandard;
 
-    @OneToMany(mappedBy = "value")
-    private Set<PortalProductAttributeValueDefinitionEntity> portalProductDefinitionLink = new HashSet<>();
+    @ManyToOne
+    @MapsId("portalId")
+    @JoinColumn(name = "portal_id")
+    private PortalEntity portal;
+
+    @ManyToOne
+    @MapsId("productId")
+    @JoinColumn(name = "product_id")
+    private ProductEntity product;
+
+    @ManyToOne
+    @MapsId("definitionId")
+    @JoinColumn(name = "definition_id")
+    private AttributeDefinitionEntity definition;
 
 }

@@ -13,7 +13,7 @@ public class GetProductDetailsUseCase implements UseCase<GetProductDetailsInput,
 
     @Override
     public GetProductDetailsOutput execute(final GetProductDetailsInput input) {
-        var existingProduct = productService.getById(input.getProductId())
+        var existingProduct = productService.findById(input.getProductId())
                                                         .orElseThrow(() -> new RuntimeException("Could not find product"));
         return new GetProductDetailsOutput(existingProduct);
     }

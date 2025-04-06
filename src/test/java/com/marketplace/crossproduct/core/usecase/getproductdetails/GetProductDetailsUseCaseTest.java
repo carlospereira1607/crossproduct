@@ -38,8 +38,8 @@ class GetProductDetailsUseCaseTest {
 
     @Test
     void testExecute_success() {
-        var product = new Product(1L, "Product A", Set.of(new AttributeValue()));
-        when(productService.getById(input.getProductId())).thenReturn(Optional.of(product));
+        var product = new Product(1L, "Product A", Set.of(AttributeValue.builder().build()));
+        when(productService.findById(input.getProductId())).thenReturn(Optional.of(product));
 
         var output = getProductDetailsUseCase.execute(input);
 
@@ -48,20 +48,20 @@ class GetProductDetailsUseCaseTest {
         assertEquals(product.getName(), output.getProduct().getName());
         assertEquals(product.getAttributes().size(), output.getProduct().getAttributes().size());
 
-        verify(productService).getById(input.getProductId());
+        verify(productService).findById(input.getProductId());
         verifyNoMoreInteractions(productService);
     }
 
     @Test
     void testExecute_productNotFound() {
-        when(productService.getById(input.getProductId())).thenReturn(Optional.empty());
+        when(productService.findById(input.getProductId())).thenReturn(Optional.empty());
 
         var thrown = assertThrows(RuntimeException.class, () -> {
             getProductDetailsUseCase.execute(input);
         });
 
         assertEquals("Could not find product", thrown.getMessage());
-        verify(productService).getById(input.getProductId());
+        verify(productService).findById(input.getProductId());
         verifyNoMoreInteractions(productService);
     }
 

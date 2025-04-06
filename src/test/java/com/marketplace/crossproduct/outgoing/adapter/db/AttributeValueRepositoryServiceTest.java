@@ -2,6 +2,8 @@ package com.marketplace.crossproduct.outgoing.adapter.db;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
+import com.marketplace.crossproduct.core.model.Portal;
+import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.AttributeValueEntityRepository;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeValueEntity;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper.AttributeValueEntityMapper;
@@ -30,7 +32,7 @@ class AttributeValueRepositoryServiceTest {
     private AttributeValueRepositoryService repositoryService;
 
     private AttributeValue domainValue;
-    private AttributeValueEntity entity;
+    private AttributeValueEntity entityValue;
 
     @BeforeEach
     void setUp() {
@@ -39,34 +41,42 @@ class AttributeValueRepositoryServiceTest {
                 .name("Color")
                 .build();
 
-        domainValue = AttributeValue.builder()
-                .id(100L)
-                .definition(definition)
-                .value("Red")
-                .isStandard(true)
+        var product = Product.builder()
+                .id(1L)
                 .build();
 
-        entity = new AttributeValueEntity();
-        entity.setId(100L);
-        entity.setValue("Red");
-        entity.setIsStandard(true);
+        var portal = Portal.builder()
+                .id(1L)
+                .build();
+
+        domainValue = AttributeValue.builder()
+                .value("Red")
+                .isStandard(true)
+                .definition(definition)
+                .product(product)
+                .portal(portal)
+                .build();
+
+        entityValue = new AttributeValueEntity();
+        entityValue.setValue("Red");
+        entityValue.setIsStandard(true);
     }
 
     @Test
     void testSave_success() {
-        when(attributeValueEntityMapper.toAttributeValueEntity(domainValue)).thenReturn(entity);
-        when(attributeValueEntityRepository.save(entity)).thenReturn(entity);
-        when(attributeValueEntityMapper.toAttributeValue(entity)).thenReturn(domainValue);
+        when(attributeValueEntityMapper.toAttributeValueEntity(domainValue)).thenReturn(entityValue);
+        when(attributeValueEntityRepository.save(entityValue)).thenReturn(entityValue);
+        when(attributeValueEntityMapper.toAttributeValue(entityValue)).thenReturn(domainValue);
 
         var result = repositoryService.save(domainValue);
 
         assertNotNull(result);
-        assertEquals(domainValue.getId(), result.getId());
+        assertEquals(domainValue.getIsStandard(), result.getIsStandard());
         assertEquals(domainValue.getValue(), result.getValue());
 
         verify(attributeValueEntityMapper).toAttributeValueEntity(domainValue);
-        verify(attributeValueEntityRepository).save(entity);
-        verify(attributeValueEntityMapper).toAttributeValue(entity);
+        verify(attributeValueEntityRepository).save(entityValue);
+        verify(attributeValueEntityMapper).toAttributeValue(entityValue);
     }
 
 }

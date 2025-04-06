@@ -29,42 +29,39 @@ class AttributeValueServiceTest {
     private AttributeValueService attributeValueService;
 
     @Test
-    void testFindById_existingId_returnsValue() {
-        var id = 1L;
-        AttributeValue value = AttributeValue.builder()
-                .id(id)
+    void testFindById_existingPortalProductDefinition_returnsValue() {
+        var value = AttributeValue.builder()
                 .value("Color")
                 .isStandard(false)
                 .definition(AttributeDefinition.builder().id(2L).build())
                 .build();
 
-        when(attributeValuePortRepository.findById(id)).thenReturn(Optional.of(value));
+        when(attributeValuePortRepository.findByPortalProductDefinition(any(), any(), any())).thenReturn(Optional.of(value));
 
-        var result = attributeValueService.findById(id);
+        var result = attributeValueService.findByPortalProductDefinition(any(), any(), any());
 
         assertTrue(result.isPresent());
         assertEquals(value, result.get());
 
-        verify(attributeValuePortRepository).findById(id);
+        verify(attributeValuePortRepository).findByPortalProductDefinition(any(), any(), any());
         verifyNoMoreInteractions(attributeValuePortRepository);
     }
 
     @Test
-    void testFindById_nonExistingId_returnsEmptyOptional() {
+    void testFindById_nonExistingPortalProductDefinition_returnsEmptyOptional() {
         var id = 999L;
-        when(attributeValuePortRepository.findById(id)).thenReturn(Optional.empty());
+        when(attributeValuePortRepository.findByPortalProductDefinition(any(), any(), any())).thenReturn(Optional.empty());
 
-        var result = attributeValueService.findById(id);
+        var result = attributeValueService.findByPortalProductDefinition(any(), any(), any());
 
         assertTrue(result.isEmpty());
-        verify(attributeValuePortRepository).findById(id);
+        verify(attributeValuePortRepository).findByPortalProductDefinition(any(), any(), any());
         verifyNoMoreInteractions(attributeValuePortRepository);
     }
 
     @Test
     void testUpdate_validValue_returnsUpdatedValue() {
-        AttributeValue inputValue = AttributeValue.builder()
-                .id(1L)
+        var inputValue = AttributeValue.builder()
                 .value("Updated")
                 .isStandard(true)
                 .definition(AttributeDefinition.builder().id(2L).build())
@@ -92,19 +89,17 @@ class AttributeValueServiceTest {
         var isStandard = true;
 
         var expectedAttributeValue = AttributeValue.builder()
-                .id(100L)
                 .definition(definition)
                 .value(inputValue)
                 .isStandard(isStandard)
                 .build();
 
-        when(attributeValuePortRepository.save(any(AttributeValue.class)))
-                .thenReturn(expectedAttributeValue);
+        when(attributeValuePortRepository.save(any(AttributeValue.class))).thenReturn(expectedAttributeValue);
 
         var result = attributeValueService.create(definition, inputValue, isStandard);
 
         assertNotNull(result);
-        assertEquals(expectedAttributeValue.getId(), result.getId());
+        assertEquals(expectedAttributeValue.getIsStandard(), result.getIsStandard());
         assertEquals(expectedAttributeValue.getValue(), result.getValue());
         assertEquals(expectedAttributeValue.getDefinition(), result.getDefinition());
         assertTrue(result.getIsStandard());

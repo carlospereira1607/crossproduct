@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CreateAttributeValueInput extends UseCaseInput {
-    private Long attributeDefinitionId;
+    private Long definitionId;
     private Long portalId;
     private Long productId;
     private String value;

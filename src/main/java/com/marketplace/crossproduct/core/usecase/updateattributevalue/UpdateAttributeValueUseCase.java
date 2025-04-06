@@ -2,6 +2,8 @@ package com.marketplace.crossproduct.core.usecase.updateattributevalue;
 
 import com.marketplace.crossproduct.core.service.AttributeDefinitionService;
 import com.marketplace.crossproduct.core.service.AttributeValueService;
+import com.marketplace.crossproduct.core.service.PortalService;
+import com.marketplace.crossproduct.core.service.ProductService;
 import com.marketplace.crossproduct.core.usecase.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +16,29 @@ public class UpdateAttributeValueUseCase implements UseCase<UpdateAttributeValue
 
     private final AttributeValueService attributeValueService;
     private final AttributeDefinitionService attributeDefinitionService;
+    private final PortalService portalService;
+    private final ProductService productService;
 
     @Override
     public UpdateAttributeValueOutput execute(final UpdateAttributeValueInput input) {
-        var existingValue = attributeValueService.findById(input.getAttributeValueId()).orElseThrow(() -> new RuntimeException("Could not find attribute value to update"));
+        var existingValue = attributeValueService.findByPortalProductDefinition(input.getPortalId(),
+                                                                                              input.getProductId(),
+                                                                                              input.getDefinitionId())
+                                                                .orElseThrow(() -> new RuntimeException("Could not find attribute value to update"));
 
-        if(shouldUpdate(existingValue.getDefinition(), input.getAttributeDefinitionId())) {
-            var newDefinition = attributeDefinitionService.findById(input.getAttributeDefinitionId()).orElseThrow(() -> new RuntimeException("Could not find attribute definition to set for value"));
+        if(shouldUpdate(existingValue.getDefinition(), input.getDefinitionId())) {
+            var newDefinition = attributeDefinitionService.findById(input.getDefinitionId()).orElseThrow(() -> new RuntimeException("Could not find attribute definition to set for value"));
             existingValue.setDefinition(newDefinition);
+        }
+
+        if(shouldUpdate(existingValue.getPortal(), input.getPortalId())) {
+            var newDefinition = portalService.findById(input.getPortalId()).orElseThrow(() -> new RuntimeException("Could not find portal to set for value"));
+            existingValue.setPortal(newDefinition);
+        }
+
+        if(shouldUpdate(existingValue.getProduct(), input.getProductId())) {
+            var newDefinition = productService.findById(input.getPortalId()).orElseThrow(() -> new RuntimeException("Could not find product to set for value"));
+            existingValue.setProduct(newDefinition);
         }
 
         if(shouldUpdate(existingValue.getValue(), input.getValue())) {
@@ -34,23 +51,24 @@ public class UpdateAttributeValueUseCase implements UseCase<UpdateAttributeValue
 
         var result = attributeValueService.update(existingValue);
         return UpdateAttributeValueOutput.builder()
-                .id(result.getId())
                 .value(result.getValue())
                 .isStandard(result.getIsStandard())
+                .portal(result.getPortal())
+                .product(result.getProduct())
                 .definition(result.getDefinition())
                 .build();
     }
 
-    private boolean shouldUpdate(final Object one, final Object another) {
-        if(one == null) {
+    private boolean shouldUpdate(final Object toBeUpdated, final Object update) {
+        if(toBeUpdated == null) {
             return true;
         }
 
-        if(another == null) {
+        if(update == null) {
             return false;
         }
 
-        return !one.equals(another);
+        return !toBeUpdated.equals(update);
     }
 
 }

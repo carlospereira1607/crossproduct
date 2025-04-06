@@ -33,7 +33,7 @@ class GetProductsByPortalUseCaseTest {
         productSet.add(new Product(1L, "Product 1", null));
         productSet.add(new Product(2L, "Product 2", null));
 
-        when(productService.getByPortalId(portalId)).thenReturn(productSet);
+        when(productService.findByPortalId(portalId)).thenReturn(productSet);
 
         var input = GetProductsByPortalInput.builder().portalId(portalId).build();
         var output = getProductsByPortalUseCase.execute(input);
@@ -43,7 +43,7 @@ class GetProductsByPortalUseCaseTest {
         assertTrue(output.getProducts().stream().anyMatch(product -> product.getName().equals("Product 1")));
         assertTrue(output.getProducts().stream().anyMatch(product -> product.getName().equals("Product 2")));
 
-        verify(productService).getByPortalId(portalId);
+        verify(productService).findByPortalId(portalId);
         verifyNoMoreInteractions(productService);
     }
 
@@ -52,7 +52,7 @@ class GetProductsByPortalUseCaseTest {
         var portalId = 1L;
         var emptyProductSet = new HashSet<Product>();
 
-        when(productService.getByPortalId(portalId)).thenReturn(emptyProductSet);
+        when(productService.findByPortalId(portalId)).thenReturn(emptyProductSet);
 
         var input = GetProductsByPortalInput.builder().portalId(portalId).build();
         var output = getProductsByPortalUseCase.execute(input);
@@ -60,7 +60,7 @@ class GetProductsByPortalUseCaseTest {
         assertNotNull(output);
         assertTrue(output.getProducts().isEmpty());
 
-        verify(productService).getByPortalId(portalId);
+        verify(productService).findByPortalId(portalId);
         verifyNoMoreInteractions(productService);
     }
 

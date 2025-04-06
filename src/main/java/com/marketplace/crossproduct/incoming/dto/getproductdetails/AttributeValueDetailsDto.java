@@ -1,4 +1,4 @@
 package com.marketplace.crossproduct.incoming.dto.getproductdetails;
 
-public record AttributeValueDetailsDto(Long valueId, String value, boolean isStandard, AttributeDefinitionDetailsDto definition) {
+public record AttributeValueDetailsDto(String value, boolean isStandard, AttributeDefinitionDetailsDto definition) {
 }

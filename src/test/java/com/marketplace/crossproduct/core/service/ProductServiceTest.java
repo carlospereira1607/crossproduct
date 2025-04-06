@@ -31,7 +31,7 @@ class ProductServiceTest {
     private ProductService productService;
 
     @Test
-    void testGetByPortalId_success() {
+    void testFindByPortalId_success() {
         var portalId = 1L;
         var expectedProducts = new HashSet<Product>();
         expectedProducts.add(new Product(1L, "Product 1", null));
@@ -39,7 +39,7 @@ class ProductServiceTest {
 
         when(productPortRepository.getByPortalId(portalId)).thenReturn(expectedProducts);
 
-        var result = productService.getByPortalId(portalId);
+        var result = productService.findByPortalId(portalId);
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -51,13 +51,13 @@ class ProductServiceTest {
     }
 
     @Test
-    void testGetByPortalId_soProductsFound() {
+    void testFindByPortalId_soProductsFound() {
         var portalId = 1L;
         var expectedProducts = new HashSet<Product>();
 
         when(productPortRepository.getByPortalId(portalId)).thenReturn(expectedProducts);
 
-        var result = productService.getByPortalId(portalId);
+        var result = productService.findByPortalId(portalId);
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -67,12 +67,12 @@ class ProductServiceTest {
     }
 
     @Test
-    void testGetById_productFound() {
+    void testFindById_productFound() {
         var productId = 1L;
-        var product = new Product(1L, "Product A", Set.of(new AttributeValue()));
+        var product = new Product(1L, "Product A", Set.of(AttributeValue.builder().build()));
         when(productPortRepository.getById(productId)).thenReturn(Optional.of(product));
 
-        var result = productService.getById(productId);
+        var result = productService.findById(productId);
 
         assertTrue(result.isPresent(), "Product should be present");
         assertEquals(productId, result.get().getId(), "Product ID should match");
@@ -83,11 +83,11 @@ class ProductServiceTest {
     }
 
     @Test
-    void testGetById_productNotFound() {
+    void testFindById_productNotFound() {
         var productId = 1L;
         when(productPortRepository.getById(productId)).thenReturn(Optional.empty());
 
-        var result = productService.getById(productId);
+        var result = productService.findById(productId);
 
         assertFalse(result.isPresent(), "Product should not be present");
 

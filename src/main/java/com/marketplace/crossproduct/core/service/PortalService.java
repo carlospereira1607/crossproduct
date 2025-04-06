@@ -13,7 +13,7 @@ public class PortalService {
 
     private final PortalPortRepository portalPortRepository;
 
-    public Optional<Portal> getById(final Long id) {
+    public Optional<Portal> findById(final Long id) {
         return portalPortRepository.findById(id);
     }
 

@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public interface AttributeValuePortRepository {
 
-    Optional<AttributeValue> findById(final Long id);
+    Optional<AttributeValue> findByPortalProductDefinition(Long portalId, Long productId, Long definitionId);
 
-    AttributeValue save(final AttributeValue attributeValue);
+    AttributeValue save(AttributeValue entry);
 
 }

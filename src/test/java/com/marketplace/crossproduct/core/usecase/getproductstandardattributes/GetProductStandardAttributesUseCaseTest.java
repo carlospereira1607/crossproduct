@@ -2,6 +2,7 @@ package com.marketplace.crossproduct.core.usecase.getproductstandardattributes;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
+import com.marketplace.crossproduct.core.model.Portal;
 import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,8 +37,12 @@ class GetProductStandardAttributesUseCaseTest {
     @BeforeEach
     void setUp() {
         var attributes = new HashSet<AttributeValue>();
-        attributes.add(new AttributeValue(1L, "attr1", true, AttributeDefinition.builder().build(), Product.builder().build()));
-        attributes.add(new AttributeValue(2L, "attr2", false, AttributeDefinition.builder().build(), Product.builder().build()));
+        attributes.add(new AttributeValue("attr1", true,
+                Portal.builder().build(), Product.builder().build(), AttributeDefinition.builder().build()
+        ));
+        attributes.add(new AttributeValue("attr2", true,
+                Portal.builder().build(), Product.builder().build(), AttributeDefinition.builder().build()
+        ));
         product = new Product(1L, "Product 1", attributes);
     }
 
@@ -45,34 +50,36 @@ class GetProductStandardAttributesUseCaseTest {
     void testExecute_success() {
         var productId = 1L;
         var input = new GetProductStandardAttributesInput(productId);
-        when(productService.getById(productId)).thenReturn(Optional.of(product));
+        when(productService.findById(productId)).thenReturn(Optional.of(product));
 
         var output = getProductStandardAttributesUseCase.execute(input);
 
         assertNotNull(output);
         assertNotNull(output.getProduct());
-        assertEquals(1, output.getProduct().getAttributes().size());
+        assertEquals(2, output.getProduct().getAttributes().size());
         assertTrue(output.getProduct().getAttributes().stream().anyMatch(AttributeValue::getIsStandard));
-        verify(productService).getById(productId);
+        verify(productService).findById(productId);
     }
 
     @Test
     void testExecute_productNotFound() {
         var productId = 1L;
         var input = new GetProductStandardAttributesInput(productId);
-        when(productService.getById(productId)).thenReturn(Optional.empty());
+        when(productService.findById(productId)).thenReturn(Optional.empty());
 
-        var exception = assertThrows(RuntimeException.class, () -> {
-            getProductStandardAttributesUseCase.execute(input);
-        });
+        var exception = assertThrows(RuntimeException.class, () -> getProductStandardAttributesUseCase.execute(input));
         assertEquals("Product does not exist", exception.getMessage());
-        verify(productService).getById(productId);
+        verify(productService).findById(productId);
     }
 
     @Test
     void testFilterForStandardAttributes() {
-        var standardAttribute = new AttributeValue(1L, "Standard Attribute", true, AttributeDefinition.builder().build(), Product.builder().build());
-        var nonStandardAttribute = new AttributeValue(2L, "Non-standard Attribute", false, AttributeDefinition.builder().build(), Product.builder().build());
+        var standardAttribute = new AttributeValue("attr1", true,
+                Portal.builder().build(), Product.builder().build(), AttributeDefinition.builder().build()
+        );
+        var nonStandardAttribute = new AttributeValue("attr1", false,
+                Portal.builder().build(), Product.builder().build(), AttributeDefinition.builder().build()
+        );
         var mixedAttributes = new HashSet<AttributeValue>();
         mixedAttributes.add(standardAttribute);
         mixedAttributes.add(nonStandardAttribute);

@@ -36,5 +36,5 @@ public class PortalEntity {
     private List<UserEntity> users;
 
     @OneToMany(mappedBy = "portal")
-    private Set<PortalProductAttributeValueDefinitionEntity> productValueDefinitionLinks = new HashSet<>();
+    private Set<AttributeValueEntity> attributes = new HashSet<>();
 }

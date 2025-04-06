@@ -1,6 +1,8 @@
 package com.marketplace.crossproduct.incoming.rest;
 
+import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
+import com.marketplace.crossproduct.core.model.Portal;
 import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsInput;
 import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsOutput;
@@ -45,7 +47,9 @@ class ProductControllerTest {
     @Test
     void getStandardAttributes_success() {
         var productId = 1L;
-        var standardAttribute = new AttributeValue(1L, "Standard Attribute", true, null, null);
+        var standardAttribute = new AttributeValue("attr1", true,
+                Portal.builder().build(), Product.builder().build(), AttributeDefinition.builder().build()
+        );
         var product = Product.builder().id(productId).name("Test Product").attributes(Set.of(standardAttribute)).build();
 
         var expectedResponse = new GetProductDetailsResponseDto(product.getId(), product.getName(), null);

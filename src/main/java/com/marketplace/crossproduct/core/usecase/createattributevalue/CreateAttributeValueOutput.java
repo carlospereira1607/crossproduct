@@ -1,6 +1,8 @@
 package com.marketplace.crossproduct.core.usecase.createattributevalue;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
+import com.marketplace.crossproduct.core.model.Portal;
+import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.usecase.UseCaseOutput;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,4 +14,6 @@ public class CreateAttributeValueOutput extends UseCaseOutput {
     private String value;
     private boolean isStandard;
     private AttributeDefinition definition;
+    private Product product;
+    private Portal portal;
 }

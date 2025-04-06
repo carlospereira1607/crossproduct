@@ -17,7 +17,7 @@ public class GetProductStandardAttributesUseCase implements UseCase<GetProductSt
 
     @Override
     public GetProductStandardAttributesOutput execute(final GetProductStandardAttributesInput input) {
-        var product = productService.getById(input.getProductId()).orElseThrow(() -> new RuntimeException("Product does not exist"));
+        var product = productService.findById(input.getProductId()).orElseThrow(() -> new RuntimeException("Product does not exist"));
 
         product.setAttributes(filterForStandard(product.getAttributes()));
 

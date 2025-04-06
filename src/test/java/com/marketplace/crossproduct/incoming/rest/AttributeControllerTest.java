@@ -133,7 +133,7 @@ class AttributeControllerTest {
         var requestDto = new CreateAttributeValueRequestDto(1L, 1L, 1L, "Red", true);
 
         var input = CreateAttributeValueInput.builder()
-                .attributeDefinitionId(1L)
+                .definitionId(1L)
                 .portalId(1L)
                 .productId(1L)
                 .value("Red")
@@ -171,7 +171,7 @@ class AttributeControllerTest {
     void testCreateAttributeValue_failure() {
         var requestDto = new CreateAttributeValueRequestDto(1L, 1L, 1L, "Red", false);
         var input = CreateAttributeValueInput.builder()
-                .attributeDefinitionId(1L)
+                .definitionId(1L)
                 .portalId(1L)
                 .productId(1L)
                 .value("Red")
@@ -196,8 +196,11 @@ class AttributeControllerTest {
         var definition = AttributeDefinition.builder().build();
 
         var request = new UpdateAttributeValueRequestDto(definition.getId(), "Blue", false);
-        var input = UpdateAttributeValueInput.builder().attributeValueId(1L).value("Blue").isStandard(false).attributeDefinitionId(2L).build();
-        var output = UpdateAttributeValueOutput.builder().id(1L).value("Blue").isStandard(false).build();
+        var input = UpdateAttributeValueInput.builder()
+                .value("Blue")
+                .isStandard(false)
+                .build();
+        var output = UpdateAttributeValueOutput.builder().value("Blue").isStandard(false).build();
         var response = new UpdateAttributeValueResponseDto(1L, "Blue", false, definition);
 
         when(updateAttributeValueMapper.toUpdateAttributeValueInput(request)).thenReturn(input);

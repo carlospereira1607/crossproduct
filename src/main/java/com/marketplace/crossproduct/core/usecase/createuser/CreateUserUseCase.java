@@ -16,7 +16,7 @@ public class CreateUserUseCase implements UseCase<CreateUserInput, CreateUserOut
 
     @Override
     public CreateUserOutput execute(final CreateUserInput input) {
-        var portal = portalService.getById(input.getPortalId()).orElseThrow(() -> new RuntimeException("Portal does not exist"));
+        var portal = portalService.findById(input.getPortalId()).orElseThrow(() -> new RuntimeException("Portal does not exist"));
 
         var existingUser = userService.getByUsername(input.getUsername());
         if(existingUser.isPresent()) {

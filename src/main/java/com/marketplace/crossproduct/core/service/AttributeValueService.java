@@ -14,8 +14,8 @@ public class AttributeValueService {
 
     private final AttributeValuePortRepository attributeValuePortRepository;
 
-    public Optional<AttributeValue> findById(final Long id) {
-        return attributeValuePortRepository.findById(id);
+    public Optional<AttributeValue> findByPortalProductDefinition(final Long portalId, final Long productId, final Long definitionId) {
+        return attributeValuePortRepository.findByPortalProductDefinition(portalId, productId, definitionId);
     }
 
     public AttributeValue update(final AttributeValue value) {

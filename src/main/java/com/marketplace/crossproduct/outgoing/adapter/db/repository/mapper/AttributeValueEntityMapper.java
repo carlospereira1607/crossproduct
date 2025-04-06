@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface AttributeValueEntityMapper {
 
-    AttributeValueEntity toAttributeValueEntity(AttributeValue attributeValue);
+    AttributeValueEntity toAttributeValueEntity(AttributeValue entry);
 
-    AttributeValue toAttributeValue(AttributeValueEntity attributeValueEntity);
+    AttributeValue toAttributeValue(AttributeValueEntity entity);
 
 }
