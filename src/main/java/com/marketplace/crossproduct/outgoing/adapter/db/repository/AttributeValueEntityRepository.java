@@ -12,6 +12,8 @@ public interface AttributeValueEntityRepository extends JpaRepository<AttributeV
 
     Optional<AttributeValueEntity> findByProductIdAndPortalIdAndDefinitionId(Long productId, Long portalId, Long definitionId);
 
+    List<AttributeValueEntity> findByProductId(Long productId);
+
     @Query("SELECT av FROM AttributeValueEntity av WHERE av.product.id = :productId AND av.portal.id = :portalId")
     List<AttributeValueEntity> findByProductIdAndPortalId(@Param("productId") Long productId, @Param("portalId") Long portalId);
 

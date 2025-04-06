@@ -13,4 +13,6 @@ public interface AttributeValuePortRepository {
 
     Set<AttributeValue> findByProductIdAndPortalId(Long productId, Long portalId);
 
+    Set<AttributeValue> findByProductId(Long productId);
+
 }

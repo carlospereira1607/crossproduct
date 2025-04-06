@@ -3,7 +3,6 @@ package com.marketplace.crossproduct.outgoing.adapter.db;
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.port.db.AttributeValuePortRepository;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.AttributeValueEntityRepository;
-import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeValueEntity;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeValueId;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper.AttributeValueEntityMapper;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +35,10 @@ public class AttributeValueRepositoryService implements AttributeValuePortReposi
     @Override
     public Set<AttributeValue> findByProductIdAndPortalId(Long productId, Long portalId) {
         return repository.findByProductIdAndPortalId(productId, portalId).stream().map(mapper::toAttributeValue).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<AttributeValue> findByProductId(Long productId) {
+        return repository.findByProductId(productId).stream().map(mapper::toAttributeValue).collect(Collectors.toSet());
     }
 }

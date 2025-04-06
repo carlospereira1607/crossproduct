@@ -8,7 +8,6 @@ import com.marketplace.crossproduct.core.port.db.AttributeValuePortRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -39,6 +38,10 @@ public class AttributeValueService {
 
     public Set<AttributeValue> findByProductIdAndPortalId(Long productId, Long portalId) {
         return attributeValuePortRepository.findByProductIdAndPortalId(productId, portalId);
+    }
+
+    public Set<AttributeValue> findByProductId(Long productId) {
+        return attributeValuePortRepository.findByProductId(productId);
     }
 
 }
