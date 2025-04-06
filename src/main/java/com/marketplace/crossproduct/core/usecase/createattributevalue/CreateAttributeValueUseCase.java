@@ -18,6 +18,9 @@ public class CreateAttributeValueUseCase implements UseCase<CreateAttributeValue
         var definition = attributeDefinitionService.findById(input.getAttributeDefinitionId())
                                                                                 .orElseThrow(() -> new RuntimeException("Could not find attribute definition"));
         var value = attributeValueService.create(definition, input.getValue(), input.isStandard());
+
+
+
         return CreateAttributeValueOutput.builder()
                 .id(value.getId())
                 .value(value.getValue())

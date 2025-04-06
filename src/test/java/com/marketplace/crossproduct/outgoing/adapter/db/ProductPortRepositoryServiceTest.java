@@ -3,7 +3,7 @@ package com.marketplace.crossproduct.outgoing.adapter.db;
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.ProductEntityRepository;
-import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.PortalProductAttributeDefinitionEntity;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.PortalProductAttributeValueDefinitionEntity;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.ProductEntity;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper.ProductEntityMapper;
 import org.junit.jupiter.api.Test;
@@ -100,7 +100,7 @@ class ProductPortRepositoryServiceTest {
     @Test
     void testGetById_productFound() {
         var productId = 1L;
-        var productEntity = new ProductEntity(productId, "Product A", Set.of(new PortalProductAttributeDefinitionEntity()));
+        var productEntity = new ProductEntity(productId, "Product A", Set.of(new PortalProductAttributeValueDefinitionEntity()));
         var product = new Product(productId, "Product A", Set.of(new AttributeValue()));
 
         when(productEntityRepository.findById(productId)).thenReturn(Optional.of(productEntity));

@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "portal_product_attribute_definition")
-public class PortalProductAttributeDefinitionEntity {
+@Table(name = "portal_product_attribute_value_definition")
+public class PortalProductAttributeValueDefinitionEntity {
 
     @EmbeddedId
     private PortalProductAttributeDefinitionId id;
@@ -34,7 +34,12 @@ public class PortalProductAttributeDefinitionEntity {
 
     @ManyToOne
     @MapsId("attributeDefinitionId")
-    @JoinColumn(name = "attribute_definition_id")
+    @JoinColumn(name = "definition_id")
     private AttributeDefinitionEntity definition;
+
+    @ManyToOne
+    @MapsId("attributeValueId")
+    @JoinColumn(name = "value_id")
+    private AttributeValueEntity value;
 
 }

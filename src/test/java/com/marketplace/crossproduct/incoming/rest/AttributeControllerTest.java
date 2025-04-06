@@ -130,10 +130,12 @@ class AttributeControllerTest {
 
     @Test
     void testCreateAttributeValue_success() {
-        var requestDto = new CreateAttributeValueRequestDto(1L, "Red", true);
+        var requestDto = new CreateAttributeValueRequestDto(1L, 1L, 1L, "Red", true);
 
         var input = CreateAttributeValueInput.builder()
                 .attributeDefinitionId(1L)
+                .portalId(1L)
+                .productId(1L)
                 .value("Red")
                 .isStandard(true)
                 .build();
@@ -167,9 +169,11 @@ class AttributeControllerTest {
 
     @Test
     void testCreateAttributeValue_failure() {
-        var requestDto = new CreateAttributeValueRequestDto(1L, "Red", false);
+        var requestDto = new CreateAttributeValueRequestDto(1L, 1L, 1L, "Red", false);
         var input = CreateAttributeValueInput.builder()
                 .attributeDefinitionId(1L)
+                .portalId(1L)
+                .productId(1L)
                 .value("Red")
                 .isStandard(false)
                 .build();

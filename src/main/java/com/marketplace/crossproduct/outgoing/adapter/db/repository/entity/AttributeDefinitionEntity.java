@@ -54,6 +54,6 @@ public class AttributeDefinitionEntity {
     private Set<AttributeValueEntity> values;
 
     @OneToMany(mappedBy = "definition")
-    private Set<PortalProductAttributeDefinitionEntity> portalProductLinks = new HashSet<>();
+    private Set<PortalProductAttributeValueDefinitionEntity> portalProductValueLink = new HashSet<>();
 
 }
