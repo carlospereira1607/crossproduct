@@ -28,7 +28,7 @@ public class AuthController {
     public ResponseEntity<CreateUserResponseDto> createUser(@RequestBody CreateUserRequestDto createUserRequestDto) {
         var createUserInput = CreateUserInput.builder()
                 .username(createUserRequestDto.username())
-                .role(Role.valueOf(createUserRequestDto.role())) //TODO
+                .role(Role.valueOf(createUserRequestDto.role()))
                 .password(createUserRequestDto.password())
                 .portalId(createUserRequestDto.portalId())
                 .build();

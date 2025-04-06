@@ -51,7 +51,6 @@ class AttributeValueServiceTest {
 
     @Test
     void testFindById_nonExistingPortalProductDefinition_returnsEmptyOptional() {
-        var id = 999L;
         when(attributeValuePortRepository.findByPortalProductDefinition(any(), any(), any())).thenReturn(Optional.empty());
 
         var result = attributeValueService.findByPortalProductDefinition(any(), any(), any());
