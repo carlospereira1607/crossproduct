@@ -1,0 +1,16 @@
+package com.marketplace.crossproduct.incoming.mapper;
+
+import com.marketplace.crossproduct.core.usecase.createattributedefinition.CreateAttributeDefinitionInput;
+import com.marketplace.crossproduct.core.usecase.createattributedefinition.CreateAttributeDefinitionOutput;
+import com.marketplace.crossproduct.incoming.dto.createattributedefinition.CreateAttributeDefinitionRequestDto;
+import com.marketplace.crossproduct.incoming.dto.createattributedefinition.CreateAttributeDefinitionResponseDto;
+import org.mapstruct.Mapper;
+
+@Mapper(componentModel = "spring")
+public interface CreateAttributeDefinitionMapper {
+
+    CreateAttributeDefinitionInput toCreateAttributeDefinitionInput(CreateAttributeDefinitionRequestDto createAttributeDefinitionRequestDto);
+
+    CreateAttributeDefinitionResponseDto toCreateAttributeDefinitionResponseDto(CreateAttributeDefinitionOutput createAttributeDefinitionOutput);
+
+}
