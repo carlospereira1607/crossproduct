@@ -9,10 +9,9 @@ import java.util.Set;
 
 public interface ProductEntityRepository extends JpaRepository<ProductEntity, Long>  {
 
-    @Query("SELECT p FROM Product p " +
-            "JOIN p.attributes a " +
-            "JOIN a.definition d " +
-            "WHERE d.portal.id = :portalId")
+    @Query(value = "SELECT p.* FROM product p INNER JOIN attribute a ON a.product_id = p.id " +
+            "INNER JOIN attribute_definition ad ON ad.id = a.attribute_definition_id " +
+            "WHERE ad.portal_id = :portalId", nativeQuery = true)
     Set<ProductEntity> findAllByPortalId(@Param("portalId") Long portalId);
 
 }
