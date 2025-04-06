@@ -1,14 +1,9 @@
 package com.marketplace.crossproduct.incoming.rest;
 
-import com.marketplace.crossproduct.core.model.Product;
-import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsInput;
-import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsOutput;
-import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsUseCase;
 import com.marketplace.crossproduct.core.usecase.getproductsbyportal.GetProductsByPortalInput;
 import com.marketplace.crossproduct.core.usecase.getproductsbyportal.GetProductsByPortalOutput;
 import com.marketplace.crossproduct.core.usecase.getproductsbyportal.GetProductsByPortalUseCase;
 import com.marketplace.crossproduct.core.usecase.getproductsbyportal.ProductIdAndName;
-import com.marketplace.crossproduct.incoming.dto.getproductdetails.GetProductDetailsResponseDto;
 import com.marketplace.crossproduct.incoming.mapper.ProductMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,8 +27,6 @@ class PortalControllerTest {
     @Mock
     private GetProductsByPortalUseCase getProductsByPortalUseCase;
 
-    @Mock
-    private GetProductDetailsUseCase getProductDetailsUseCase;
 
     @Mock
     private ProductMapper productMapper;
@@ -78,23 +71,6 @@ class PortalControllerTest {
 
         verify(getProductsByPortalUseCase).execute(any(GetProductsByPortalInput.class));
         verifyNoMoreInteractions(getProductsByPortalUseCase);
-    }
-
-    @Test
-    void testGetProductDetails_success() {
-        var productId = 1L;
-        var product = new Product(productId, "Sample Product", null);
-        var productDetails = new GetProductDetailsResponseDto(product.getId(), product.getName(), null);
-
-        when(getProductDetailsUseCase.execute(any(GetProductDetailsInput.class)))
-                .thenReturn(new GetProductDetailsOutput(product));
-        when(productMapper.toGetProductDetailsResponseDto(any(Product.class)))
-                .thenReturn(productDetails);
-
-        var response = portalController.getProductDetails(productId);
-
-        assertTrue(response.getStatusCode().is2xxSuccessful());
-        assertEquals(productDetails, response.getBody());
     }
 
 }

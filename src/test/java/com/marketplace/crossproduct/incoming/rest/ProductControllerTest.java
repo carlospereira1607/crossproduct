@@ -2,6 +2,9 @@ package com.marketplace.crossproduct.incoming.rest;
 
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.model.Product;
+import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsInput;
+import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsOutput;
+import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsUseCase;
 import com.marketplace.crossproduct.core.usecase.getproductstandardattributes.GetProductStandardAttributesOutput;
 import com.marketplace.crossproduct.core.usecase.getproductstandardattributes.GetProductStandardAttributesUseCase;
 import com.marketplace.crossproduct.incoming.dto.getproductdetails.GetProductDetailsResponseDto;
@@ -10,7 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.fail;
@@ -23,11 +27,14 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
 class ProductControllerTest {
 
     @Mock
     private GetProductStandardAttributesUseCase getProductStandardAttributesUseCase;
+
+    @Mock
+    private GetProductDetailsUseCase getProductDetailsUseCase;
 
     @Mock
     private ProductMapper productMapper;
@@ -74,4 +81,22 @@ class ProductControllerTest {
         verify(getProductStandardAttributesUseCase).execute(any());
         verifyNoInteractions(productMapper);
     }
+
+    @Test
+    void testGetProductDetails_success() {
+        var productId = 1L;
+        var product = new Product(productId, "Sample Product", null);
+        var productDetails = new GetProductDetailsResponseDto(product.getId(), product.getName(), null);
+
+        when(getProductDetailsUseCase.execute(any(GetProductDetailsInput.class)))
+                .thenReturn(new GetProductDetailsOutput(product));
+        when(productMapper.toGetProductDetailsResponseDto(any(Product.class)))
+                .thenReturn(productDetails);
+
+        var response = productController.getProductDetails(productId);
+
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertEquals(productDetails, response.getBody());
+    }
+
 }
