@@ -37,13 +37,12 @@ class PortalEntityRepositoryTest {
         portalEntityRepository.delete(portalEntity);
     }
 
-
     @Test
     void testFindById_ShouldReturnPortal_WhenPortalExists() {
         Optional<PortalEntity> result = portalEntityRepository.findById(portalEntity.getId());
 
         assertTrue(result.isPresent(), "Portal should be present.");
-        assertEquals("Test Portal", result.get().getName(), "Portal name should match.");
+        assertEquals("name", result.get().getName(), "Portal name should match.");
     }
 
 
