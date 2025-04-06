@@ -36,7 +36,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productMapper.toCreateProductResponseDto(product));
     }
 
-    @GetMapping("/product/{productId}/{portalId}/{definitionId}")
+    @GetMapping("/details/{productId}/{portalId}/{definitionId}")
     public ResponseEntity<GetProductDetailsResponseDto> getProductDetails(@PathVariable Long productId,
                                                                           @PathVariable Long portalId,
                                                                           @PathVariable Long definitionId)  {

@@ -52,8 +52,7 @@ public class AttributeDefinitionEntity {
     @Column(name = "selectable_options")
     private Set<String> selectableOptions;
 
-    @OneToMany
-    @JoinColumn(name = "attribute_definition_id")
+    @OneToMany(mappedBy = "definition")
     private Set<AttributeValueEntity> attributes = new HashSet<>();
 
 }
