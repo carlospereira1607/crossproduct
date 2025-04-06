@@ -5,12 +5,10 @@ import com.marketplace.crossproduct.core.service.PortalService;
 import com.marketplace.crossproduct.core.service.UserService;
 import com.marketplace.crossproduct.core.usecase.UseCase;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CreateUserUseCase implements UseCase<CreateUserInput, CreateUserOutput> {
 
     private final UserService userService;
