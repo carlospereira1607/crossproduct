@@ -6,18 +6,18 @@ import com.marketplace.crossproduct.core.usecase.auth.AuthenticateUserUseCase;
 import com.marketplace.crossproduct.core.usecase.createuser.CreateUserInput;
 import com.marketplace.crossproduct.core.usecase.createuser.CreateUserOutput;
 import com.marketplace.crossproduct.core.usecase.createuser.CreateUserUseCase;
-import com.marketplace.crossproduct.incoming.dto.CreateUserRequestDto;
-import com.marketplace.crossproduct.incoming.dto.CreateUserResponseDto;
-import com.marketplace.crossproduct.incoming.dto.LoginRequestDto;
+import com.marketplace.crossproduct.incoming.dto.createuser.CreateUserRequestDto;
+import com.marketplace.crossproduct.incoming.dto.createuser.CreateUserResponseDto;
+import com.marketplace.crossproduct.incoming.dto.login.LoginRequestDto;
 import com.marketplace.crossproduct.security.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -25,7 +25,6 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @ExtendWith(SpringExtension.class)
 class AuthControllerTest {
 
@@ -74,7 +73,10 @@ class AuthControllerTest {
 
         when(authenticateUserUseCase.execute(any(AuthenticateUserInput.class))).thenReturn(authenticateUserOutput);
 
-        authController.authenticateUser(loginRequestDto);
+        var response = authController.authenticateUser(loginRequestDto);
+
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertNotNull(response.getBody());
 
         verify(authenticateUserUseCase).execute(any(AuthenticateUserInput.class));
         verifyNoMoreInteractions(authenticateUserUseCase);

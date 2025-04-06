@@ -4,11 +4,9 @@ import com.marketplace.crossproduct.core.service.UserService;
 import com.marketplace.crossproduct.core.usecase.UseCase;
 import com.marketplace.crossproduct.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class AuthenticateUserUseCase implements UseCase<AuthenticateUserInput, AuthenticateUserOutput> {
 
