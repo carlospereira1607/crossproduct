@@ -4,23 +4,30 @@ import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.model.Portal;
 import com.marketplace.crossproduct.core.model.Product;
+import com.marketplace.crossproduct.core.usecase.createproduct.CreateProductUseCase;
+import com.marketplace.crossproduct.core.usecase.createproduct.CreateProductUseCaseInput;
+import com.marketplace.crossproduct.core.usecase.createproduct.CreateProductUseCaseOutput;
 import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsInput;
 import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsOutput;
 import com.marketplace.crossproduct.core.usecase.getproductdetails.GetProductDetailsUseCase;
 import com.marketplace.crossproduct.core.usecase.getproductstandardattributes.GetProductStandardAttributesOutput;
 import com.marketplace.crossproduct.core.usecase.getproductstandardattributes.GetProductStandardAttributesUseCase;
+import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResponseDto;
+import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResquestDto;
 import com.marketplace.crossproduct.incoming.dto.getproductdetails.GetProductDetailsResponseDto;
 import com.marketplace.crossproduct.incoming.mapper.ProductMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -37,6 +44,9 @@ class ProductControllerTest {
 
     @Mock
     private GetProductDetailsUseCase getProductDetailsUseCase;
+
+    @Mock
+    private CreateProductUseCase createProductUseCase;
 
     @Mock
     private ProductMapper productMapper;
@@ -101,6 +111,32 @@ class ProductControllerTest {
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
         assertEquals(productDetails, response.getBody());
+    }
+
+    @Test
+    void testCreateProduct_shouldReturnOk() {
+        var requestDto = new CreateProductResquestDto("Test Product");
+        var useCaseInput = CreateProductUseCaseInput.builder().name("Test Product").build();
+        var product = new Product(1L, "Test Product", null);
+        var responseDto = new CreateProductResponseDto(1L, "Test Product");
+        var useCaseOutput = CreateProductUseCaseOutput.builder()
+                                                                                .name(product.getName())
+                                                                                .id(product.getId())
+                                                                                .build();
+        when(createProductUseCase.execute(useCaseInput)).thenReturn(useCaseOutput);
+        when(productMapper.toCreateProductResponseDto(any())).thenReturn(responseDto);
+
+        var response = productController.createProduct(requestDto);
+
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+        assertNotNull(response.getBody());
+        assertEquals(1L, response.getBody().id());
+        assertEquals("Test Product", response.getBody().name());
+
+        verify(createProductUseCase).execute(any());
+        verify(productMapper).toCreateProductResponseDto(any());
+
+        verifyNoMoreInteractions(createProductUseCase, productMapper);
     }
 
 }
