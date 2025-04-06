@@ -27,7 +27,7 @@ public class CreateAttributeValueUseCase implements UseCase<CreateAttributeValue
         var portal = portalService.findById(input.getPortalId())
                 .orElseThrow(() -> new RuntimeException("Could not find portal"));
 
-        var value = attributeValueService.create(definition, input.getValue(), input.isStandard());
+        var value = attributeValueService.create(definition, product, portal, input.getValue(), input.isStandard());
 
         return CreateAttributeValueOutput.builder()
                 .value(value.getValue())

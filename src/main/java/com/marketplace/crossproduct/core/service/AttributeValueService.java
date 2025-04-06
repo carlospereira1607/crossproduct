@@ -2,6 +2,8 @@ package com.marketplace.crossproduct.core.service;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
+import com.marketplace.crossproduct.core.model.Portal;
+import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.port.db.AttributeValuePortRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,9 +26,11 @@ public class AttributeValueService {
         return attributeValuePortRepository.save(value);
     }
 
-    public AttributeValue create(final AttributeDefinition attributeDefinition, final String value, boolean isStandard) {
+    public AttributeValue create(final AttributeDefinition attributeDefinition, final Product product, final Portal portal, final String value, boolean isStandard) {
         var attributeValue = AttributeValue.builder()
                 .definition(attributeDefinition)
+                .product(product)
+                .portal(portal)
                 .value(value)
                 .isStandard(isStandard)
                 .build();

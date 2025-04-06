@@ -9,4 +9,6 @@ public interface PortalEntityMapper {
 
     Portal toPortal(PortalEntity portalEntity);
 
+    PortalEntity toPortalEntity(Portal portal);
+
 }
