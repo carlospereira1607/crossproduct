@@ -12,18 +12,18 @@ import java.util.Set;
 
 public interface AttributeDefinitionEntityRepository extends JpaRepository<AttributeDefinitionEntity, Long> {
 
-    @Query("""
-        SELECT a FROM AttributeDefinitionEntity a
-        WHERE a.name = :name
-          AND a.definitionType = :definitionType
-          AND a.specificationType = :specificationType
-          AND a.value = :value
-          AND a.selectableOptions = :selectableOptions
-    """)
+    @Query(value = """
+        SELECT * FROM attribute_definition
+        WHERE name = :name
+          AND definition_type = :definitionType
+          AND specification_type = :specificationType
+          AND value = :value
+          AND selectable_options = :selectableOptions
+    """, nativeQuery = true)
     Optional<AttributeDefinitionEntity> findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(
             @Param("name") String name,
-            @Param("definitionType") AttributeDefinitionType definitionType,
-            @Param("specificationType") AttributeDefinitionSpecificationType specificationType,
+            @Param("definitionType") String definitionType,
+            @Param("specificationType") String specificationType,
             @Param("value") String value,
             @Param("selectableOptions") Set<String> selectableOptions
     );

@@ -45,5 +45,4 @@ class PortalEntityRepositoryTest {
         assertEquals("name", result.get().getName(), "Portal name should match.");
     }
 
-
 }

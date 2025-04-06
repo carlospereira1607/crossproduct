@@ -30,7 +30,7 @@ public class AttributeDefinitionRepositoryService implements AttributeDefinition
                                                                                                  final AttributeDefinitionSpecificationType specificationType,
                                                                                                  final String value,
                                                                                                  final Set<String> selectableOptions) {
-        var definition = repository.findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(name, definitionType, specificationType, value, selectableOptions);
+        var definition = repository.findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(name, definitionType.name(), specificationType.name(), value, selectableOptions);
         return definition.map(attributeDefinitionEntityMapper::toAttributeDefinition);
     }
 

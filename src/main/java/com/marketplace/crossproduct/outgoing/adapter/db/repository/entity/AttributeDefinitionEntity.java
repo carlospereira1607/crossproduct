@@ -3,7 +3,6 @@ package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 import com.marketplace.crossproduct.core.converter.StringSetConverter;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -12,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -49,10 +49,11 @@ public class AttributeDefinitionEntity {
     private AttributeDefinitionSpecificationType specificationType;
 
     @Convert(converter = StringSetConverter.class)
-    @Column(name = "selectable_options", columnDefinition = "TEXT")
+    @Column(name = "selectable_options")
     private Set<String> selectableOptions;
 
-    @OneToMany(mappedBy = "definition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany
+    @JoinColumn(name = "attribute_definition_id")
     private Set<AttributeValueEntity> attributes = new HashSet<>();
 
 }
