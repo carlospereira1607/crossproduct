@@ -1,5 +1,6 @@
 package com.marketplace.crossproduct.outgoing.adapter.db.repository;
 
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeDefinitionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,14 +15,16 @@ public interface AttributeDefinitionEntityRepository extends JpaRepository<Attri
     @Query("""
         SELECT a FROM AttributeDefinitionEntity a
         WHERE a.name = :name
-          AND a.type = :type
-          AND a.specification.id = :specificationId
+          AND a.definitionType = :definitionType
+          AND a.specificationType = :specificationType
+          AND a.value = :value
           AND a.selectableOptions = :selectableOptions
     """)
-    Optional<AttributeDefinitionEntity> findByNameAndTypeAndSpecificationIdAndSelectableOptions(
+    Optional<AttributeDefinitionEntity> findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(
             @Param("name") String name,
-            @Param("type") AttributeDefinitionType type,
-            @Param("specificationId") Long specificationId,
+            @Param("definitionType") AttributeDefinitionType definitionType,
+            @Param("specificationType") AttributeDefinitionSpecificationType specificationType,
+            @Param("value") String value,
             @Param("selectableOptions") Set<String> selectableOptions
     );
 

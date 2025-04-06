@@ -28,5 +28,10 @@ public class ProductPortRepositoryService implements ProductPortRepository {
         var result = productEntityRepository.findAllByPortalId(portalId);
         return result.stream().map(productEntityMapper::toProduct).collect(Collectors.toSet());
     }
+
+    @Override
+    public Optional<Product> getByProductAndPortalId(Long productId, Long portalId) {
+        return Optional.empty();
+    }
 }
 

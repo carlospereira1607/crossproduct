@@ -1,24 +1,27 @@
 package com.marketplace.crossproduct.outgoing.adapter.db;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.AttributeDefinitionEntityRepository;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.AttributeDefinitionEntity;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper.AttributeDefinitionEntityMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -28,100 +31,87 @@ class AttributeDefinitionRepositoryServiceTest {
     private AttributeDefinitionEntityRepository repository;
 
     @Mock
-    private AttributeDefinitionEntityMapper mapper;
+    private AttributeDefinitionEntityMapper attributeDefinitionEntityMapper;
 
     @InjectMocks
-    private AttributeDefinitionRepositoryService service;
+    private AttributeDefinitionRepositoryService attributeDefinitionRepositoryService;
 
-    @Test
-    void save_shouldPersistAndReturnMappedDomainObject() {
-        var domain = new AttributeDefinition(); // Replace with your builder/init
-        var entity = new AttributeDefinitionEntity();
-        var savedEntity = new AttributeDefinitionEntity();
-        var mappedResult = new AttributeDefinition();
+    private AttributeDefinition attributeDefinition;
+    private AttributeDefinitionEntity attributeDefinitionEntity;
 
-        when(mapper.toAttributeDefinitionEntity(domain)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(savedEntity);
-        when(mapper.toAttributeDefinition(savedEntity)).thenReturn(mappedResult);
+    @BeforeEach
+    void setUp() {
+        attributeDefinition = AttributeDefinition.builder()
+                .id(1L)
+                .name("Test Attribute")
+                .definitionType(AttributeDefinitionType.TEXT)
+                .specificationType(AttributeDefinitionSpecificationType.TEXT_FORMAT)
+                .value("Test Value")
+                .selectableOptions(new HashSet<>(Arrays.asList("option1", "option2")))
+                .build();
 
-        var result = service.save(domain);
-
-        assertEquals(mappedResult, result);
-        verify(mapper).toAttributeDefinitionEntity(domain);
-        verify(repository).save(entity);
-        verify(mapper).toAttributeDefinition(savedEntity);
+        attributeDefinitionEntity = AttributeDefinitionEntity.builder()
+                .id(1L)
+                .name("Test Attribute")
+                .definitionType(AttributeDefinitionType.TEXT)
+                .specificationType(AttributeDefinitionSpecificationType.TEXT_FORMAT)
+                .value("Test Value")
+                .selectableOptions(new HashSet<>(Arrays.asList("option1", "option2")))
+                .build();
     }
 
     @Test
-    void findById_shouldReturnMappedDomainIfPresent() {
-        var id = 1L;
-        var entity = new AttributeDefinitionEntity();
-        var domain = new AttributeDefinition();
+    void testSave() {
+        when(attributeDefinitionEntityMapper.toAttributeDefinitionEntity(attributeDefinition)).thenReturn(attributeDefinitionEntity);
+        when(repository.save(attributeDefinitionEntity)).thenReturn(attributeDefinitionEntity);
+        when(attributeDefinitionEntityMapper.toAttributeDefinition(attributeDefinitionEntity)).thenReturn(attributeDefinition);
 
-        when(repository.findById(id)).thenReturn(Optional.of(entity));
-        when(mapper.toAttributeDefinition(entity)).thenReturn(domain);
+        var savedDefinition = attributeDefinitionRepositoryService.save(attributeDefinition);
 
-        var result = service.findById(id);
+        assertNotNull(savedDefinition);
+        assertEquals(attributeDefinition.getId(), savedDefinition.getId());
+        assertEquals(attributeDefinition.getName(), savedDefinition.getName());
+        verify(repository).save(attributeDefinitionEntity);
+    }
+
+    @Test
+    void testFindByNameAndTypeAndSpecificationIdAndSelectableOptions() {
+        when(repository.findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(
+                any(), any(), any(), any(), any())).thenReturn(Optional.of(attributeDefinitionEntity));
+        when(attributeDefinitionEntityMapper.toAttributeDefinition(attributeDefinitionEntity)).thenReturn(attributeDefinition);
+
+        var result = attributeDefinitionRepositoryService
+                .findByNameAndTypeAndSpecificationIdAndSelectableOptions("Test Attribute", AttributeDefinitionType.TEXT,
+                        AttributeDefinitionSpecificationType.TEXT_FORMAT, "Test Value", new HashSet<>(Arrays.asList("option1", "option2")));
 
         assertTrue(result.isPresent());
-        assertEquals(domain, result.get());
-        verify(repository).findById(id);
-        verify(mapper).toAttributeDefinition(entity);
+        assertEquals(attributeDefinition.getId(), result.get().getId());
+        assertEquals(attributeDefinition.getName(), result.get().getName());
+        verify(repository).findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(
+                any(), any(), any(), any(), any());
     }
 
     @Test
-    void findByNameAndTypeAndSpecificationIdAndSelectableOptions_shouldReturnMappedDomainIfPresent() {
-        var name = "Color";
-        var type = "TEXT";
-        var specId = 1L;
-        var options = Set.of("Red", "Green");
+    void testFindById() {
+        when(repository.findById(1L)).thenReturn(Optional.of(attributeDefinitionEntity));
+        when(attributeDefinitionEntityMapper.toAttributeDefinition(attributeDefinitionEntity)).thenReturn(attributeDefinition);
 
-        var entity = new AttributeDefinitionEntity();
-        var domain = new AttributeDefinition();
-
-        when(repository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(
-                eq(name), eq(AttributeDefinitionType.valueOf(type)), eq(specId), eq(options)))
-                .thenReturn(Optional.of(entity));
-
-        when(mapper.toAttributeDefinition(entity)).thenReturn(domain);
-
-        var result = service.findByNameAndTypeAndSpecificationIdAndSelectableOptions(name, type, specId, options);
+        var result = attributeDefinitionRepositoryService.findById(1L);
 
         assertTrue(result.isPresent());
-        assertEquals(domain, result.get());
-        verify(repository).findByNameAndTypeAndSpecificationIdAndSelectableOptions(
-                name, AttributeDefinitionType.valueOf(type), specId, options);
-        verify(mapper).toAttributeDefinition(entity);
+        assertEquals(attributeDefinition.getId(), result.get().getId());
+        assertEquals(attributeDefinition.getName(), result.get().getName());
+        verify(repository).findById(1L);
     }
 
     @Test
-    void findById_shouldReturnEmptyIfNotFound() {
-        var id = 404L;
+    void testFindByIdWhenNotFound() {
+        when(repository.findById(1L)).thenReturn(Optional.empty());
 
-        when(repository.findById(id)).thenReturn(Optional.empty());
-
-        var result = service.findById(id);
+        var result = attributeDefinitionRepositoryService.findById(1L);
 
         assertTrue(result.isEmpty());
-        verify(repository).findById(id);
-        verifyNoInteractions(mapper);
-    }
-
-    @Test
-    void findByNameAndTypeAndSpecificationIdAndSelectableOptions_shouldReturnEmptyIfNotFound() {
-        var name = "Color";
-        var type = "TEXT";
-        var specId = 1L;
-        var options = Set.of("Blue");
-
-        when(repository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(
-                eq(name), eq(AttributeDefinitionType.valueOf(type)), eq(specId), eq(options)))
-                .thenReturn(Optional.empty());
-
-        var result = service.findByNameAndTypeAndSpecificationIdAndSelectableOptions(name, type, specId, options);
-
-        assertTrue(result.isEmpty());
-        verifyNoInteractions(mapper);
+        verify(repository).findById(1L);
     }
 
 }

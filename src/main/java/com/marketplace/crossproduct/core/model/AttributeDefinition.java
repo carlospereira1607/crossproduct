@@ -17,9 +17,11 @@ public class AttributeDefinition {
 
     private String name;
 
-    private AttributeDefinitionType type;
+    private AttributeDefinitionType definitionType;
 
-    private AttributeDefinitionSpecification specification;
+    private AttributeDefinitionSpecificationType specificationType;
+
+    private String value;
 
     private Set<String> selectableOptions;
 

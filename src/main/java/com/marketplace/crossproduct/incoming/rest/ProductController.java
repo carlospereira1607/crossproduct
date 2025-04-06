@@ -22,9 +22,11 @@ public class ProductController {
     private final GetProductDetailsUseCase getProductDetailsUseCase;
     private final ProductMapper productMapper;
 
-    @GetMapping("/product/{productId}")
-    public ResponseEntity<GetProductDetailsResponseDto> getProductDetails(@PathVariable Long productId)  {
-        var input = GetProductDetailsInput.builder().productId(productId).build();
+    @GetMapping("/product/{productId}/{portalId}/{definitionId}")
+    public ResponseEntity<GetProductDetailsResponseDto> getProductDetails(@PathVariable Long productId,
+                                                                          @PathVariable Long portalId,
+                                                                          @PathVariable Long definitionId)  {
+        var input = GetProductDetailsInput.builder().productId(productId).portalId(portalId).definitionId(definitionId).build();
         var product = getProductDetailsUseCase.execute(input);
         var response = productMapper.toGetProductDetailsResponseDto(product.getProduct());
 

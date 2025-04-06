@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,5 +28,10 @@ public class AttributeValueRepositoryService implements AttributeValuePortReposi
         var entity = mapper.toAttributeValueEntity(entry);
         var result = repository.save(entity);
         return mapper.toAttributeValue(result);
+    }
+
+    @Override
+    public Set<AttributeValue> findByProductIdAndPortalId(Long productId, Long portalId) {
+        return repository.findByProductIdAndPortalId(productId, portalId).stream().map(mapper::toAttributeValue).collect(Collectors.toSet());
     }
 }

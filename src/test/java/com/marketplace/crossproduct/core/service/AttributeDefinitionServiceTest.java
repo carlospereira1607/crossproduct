@@ -1,7 +1,7 @@
 package com.marketplace.crossproduct.core.service;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
-import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecification;
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import com.marketplace.crossproduct.core.port.db.AttributeDefinitionPortRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -31,68 +32,72 @@ class AttributeDefinitionServiceTest {
     @InjectMocks
     private AttributeDefinitionService attributeDefinitionService;
 
-    private AttributeDefinitionSpecification specification;
+    private AttributeDefinition attributeDefinition;
+    private Set<String> selectableOptions;
 
     @BeforeEach
-    void setup() {
-        specification = new AttributeDefinitionSpecification();
-    }
-
-    @Test
-    void testSave_shouldReturnSavedAttributeDefinition() {
-        var name = "color";
-        var type = AttributeDefinitionType.TEXT;
-        var options = Set.of("red", "blue");
-
-        var attributeToSave = AttributeDefinition.builder()
-                .name(name)
-                .type(type)
-                .specification(specification)
-                .selectableOptions(options)
+    void setUp() {
+        selectableOptions = new HashSet<>(Arrays.asList("option1", "option2"));
+        attributeDefinition = AttributeDefinition.builder()
+                .name("Test Attribute")
+                .definitionType(AttributeDefinitionType.TEXT)
+                .specificationType(AttributeDefinitionSpecificationType.TEXT_FORMAT)
+                .value("Test Value")
+                .selectableOptions(selectableOptions)
                 .build();
+    }
 
-        when(attributeDefinitionPortRepository.save(any(AttributeDefinition.class)))
-                .thenReturn(attributeToSave);
+    @Test
+    void testSave() {
+        when(attributeDefinitionPortRepository.save(any(AttributeDefinition.class))).thenReturn(attributeDefinition);
 
-        var result = attributeDefinitionService.save(name, type, specification, options);
+        var savedDefinition = attributeDefinitionService.save(
+                "Test Attribute", AttributeDefinitionType.TEXT, AttributeDefinitionSpecificationType.TEXT_FORMAT,
+                "Test Value", selectableOptions
+        );
 
-        assertNotNull(result);
-        assertEquals(name, result.getName());
-        assertEquals(type, result.getType());
-        assertEquals(options, result.getSelectableOptions());
-
+        assertNotNull(savedDefinition);
+        assertEquals("Test Attribute", savedDefinition.getName());
+        assertEquals(AttributeDefinitionType.TEXT, savedDefinition.getDefinitionType());
         verify(attributeDefinitionPortRepository).save(any(AttributeDefinition.class));
-        verifyNoMoreInteractions(attributeDefinitionPortRepository);
     }
 
     @Test
-    void testFindByName_AndTypeAndSpecificationIdAndSelectableOptions_whenFound() {
-        var name = "size";
-        var expected = AttributeDefinition.builder().name(name).build();
+    void testFindByNameAndTypeAndSpecificationIdAndSelectableOptions() {
+        when(attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(
+                any(), any(), any(), any(), any()))
+                .thenReturn(Optional.of(attributeDefinition));
 
-        when(attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any()))
-                .thenReturn(Optional.of(expected));
+        var foundDefinition = attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(
+                "Test Attribute", AttributeDefinitionType.TEXT, AttributeDefinitionSpecificationType.TEXT_FORMAT,
+                "Test Value", selectableOptions
+        );
 
-        Optional<AttributeDefinition> result = attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any());
-
-        assertTrue(result.isPresent());
-        assertEquals(name, result.get().getName());
-
-        verify(attributeDefinitionPortRepository).findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any());
-        verifyNoMoreInteractions(attributeDefinitionPortRepository);
+        assertTrue(foundDefinition.isPresent());
+        assertEquals("Test Attribute", foundDefinition.get().getName());
+        verify(attributeDefinitionPortRepository).findByNameAndTypeAndSpecificationIdAndSelectableOptions(
+                any(), any(), any(), any(), any());
     }
 
     @Test
-    void testFindByName_AndTypeAndSpecificationIdAndSelectableOptions_whenNotFound() {
-        when(attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any()))
-                .thenReturn(Optional.empty());
+    void testFindById() {
+        when(attributeDefinitionPortRepository.findById(any())).thenReturn(Optional.of(attributeDefinition));
 
-        var result = attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any());
+        var foundDefinition = attributeDefinitionService.findById(1L);
 
-        assertTrue(result.isEmpty());
+        assertTrue(foundDefinition.isPresent());
+        assertEquals("Test Attribute", foundDefinition.get().getName());
+        verify(attributeDefinitionPortRepository).findById(any());
+    }
 
-        verify(attributeDefinitionPortRepository).findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any());
-        verifyNoMoreInteractions(attributeDefinitionPortRepository);
+    @Test
+    void testFindById_NotFound() {
+        when(attributeDefinitionPortRepository.findById(any())).thenReturn(Optional.empty());
+
+        var foundDefinition = attributeDefinitionService.findById(1L);
+
+        assertTrue(foundDefinition.isEmpty());
+        verify(attributeDefinitionPortRepository).findById(any());
     }
 
 }

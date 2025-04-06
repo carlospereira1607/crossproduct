@@ -1,8 +1,8 @@
 package com.marketplace.crossproduct.outgoing.adapter.db.repository.entity;
 
 import com.marketplace.crossproduct.core.converter.StringSetConverter;
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
-import com.marketplace.crossproduct.core.model.AttributeValue;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -12,8 +12,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -40,12 +38,15 @@ public class AttributeDefinitionEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AttributeDefinitionType type;
+    @Column(name = "definition_type", nullable = false)
+    private AttributeDefinitionType definitionType;
 
-    @ManyToOne
-    @JoinColumn(name = "specification_id", nullable = false)
-    private AttributeDefinitionSpecificationEntity specification;
+    @Column(nullable = false)
+    private String value;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "specification_type", nullable = false)
+    private AttributeDefinitionSpecificationType specificationType;
 
     @Convert(converter = StringSetConverter.class)
     @Column(name = "selectable_options", columnDefinition = "TEXT")

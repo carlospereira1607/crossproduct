@@ -11,4 +11,6 @@ public interface ProductPortRepository {
 
     Set<Product> getByPortalId(final Long portalId);
 
+    Optional<Product> getByProductAndPortalId(final Long productId, final Long portalId);
+
 }

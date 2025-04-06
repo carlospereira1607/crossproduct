@@ -1,5 +1,6 @@
 package com.marketplace.crossproduct.core.usecase.getproductdetails;
 
+import com.marketplace.crossproduct.core.service.AttributeValueService;
 import com.marketplace.crossproduct.core.service.ProductService;
 import com.marketplace.crossproduct.core.usecase.UseCase;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +11,21 @@ import org.springframework.stereotype.Service;
 public class GetProductDetailsUseCase implements UseCase<GetProductDetailsInput, GetProductDetailsOutput> {
 
     private final ProductService productService;
+    private final AttributeValueService attributeValueService;
 
     @Override
     public GetProductDetailsOutput execute(final GetProductDetailsInput input) {
-        var existingProduct = productService.findById(input.getProductId())
-                                                        .orElseThrow(() -> new RuntimeException("Could not find product"));
-        return new GetProductDetailsOutput(existingProduct);
+        var values = attributeValueService.findByProductIdAndPortalId(input.getProductId(), input.getPortalId());
+
+        if(values.isEmpty()) {
+            var message = String.format("Could not find any values for product %s and portal %s", input.getProductId(), input.getPortalId());
+            throw new RuntimeException(message);
+        }
+
+        var product = productService.findById(input.getProductId()).orElseThrow(() -> new RuntimeException("Could not find product"));
+        product.setAttributes(values);
+
+        return new GetProductDetailsOutput(product);
     }
 
 }

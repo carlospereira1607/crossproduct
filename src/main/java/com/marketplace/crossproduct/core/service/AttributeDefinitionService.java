@@ -1,7 +1,7 @@
 package com.marketplace.crossproduct.core.service;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
-import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecification;
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import com.marketplace.crossproduct.core.port.db.AttributeDefinitionPortRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,22 +16,25 @@ public class AttributeDefinitionService {
 
     private final AttributeDefinitionPortRepository attributeDefinitionPortRepository;
 
-    public AttributeDefinition save(final String name, final AttributeDefinitionType type,
-                                    final AttributeDefinitionSpecification specification,
+    public AttributeDefinition save(final String name, final AttributeDefinitionType definitionType,
+                                    final AttributeDefinitionSpecificationType specificationType,
+                                    final String value,
                                     final Set<String> selectableOptions) {
         var attributeDefinition = AttributeDefinition.builder()
                 .name(name)
-                .type(type)
-                .specification(specification)
+                .definitionType(definitionType)
+                .specificationType(specificationType)
+                .value(value)
                 .selectableOptions(selectableOptions)
                 .build();
         return attributeDefinitionPortRepository.save(attributeDefinition);
     }
 
-    public Optional<AttributeDefinition> findByNameAndTypeAndSpecificationIdAndSelectableOptions(final String name, final String type,
-                                                                                                 final Long specificationId,
+    public Optional<AttributeDefinition> findByNameAndTypeAndSpecificationIdAndSelectableOptions(final String name, final AttributeDefinitionType definitionType,
+                                                                                                 final AttributeDefinitionSpecificationType specificationType,
+                                                                                                 final String value,
                                                                                                  final Set<String> selectableOptions) {
-        return attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(name, type, specificationId, selectableOptions);
+        return attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(name, definitionType, specificationType, value, selectableOptions);
     }
 
     public Optional<AttributeDefinition> findById(final Long id) {

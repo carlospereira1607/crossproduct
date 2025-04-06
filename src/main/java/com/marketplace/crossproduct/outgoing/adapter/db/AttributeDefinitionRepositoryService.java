@@ -1,6 +1,7 @@
 package com.marketplace.crossproduct.outgoing.adapter.db;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import com.marketplace.crossproduct.core.port.db.AttributeDefinitionPortRepository;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.AttributeDefinitionEntityRepository;
@@ -25,10 +26,11 @@ public class AttributeDefinitionRepositoryService implements AttributeDefinition
     }
 
     @Override
-    public Optional<AttributeDefinition> findByNameAndTypeAndSpecificationIdAndSelectableOptions(final String name, final String type,
-                                                                                                 final Long specificationId,
+    public Optional<AttributeDefinition> findByNameAndTypeAndSpecificationIdAndSelectableOptions(final String name, final AttributeDefinitionType definitionType,
+                                                                                                 final AttributeDefinitionSpecificationType specificationType,
+                                                                                                 final String value,
                                                                                                  final Set<String> selectableOptions) {
-        var definition = repository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(name, AttributeDefinitionType.valueOf(type), specificationId, selectableOptions);
+        var definition = repository.findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(name, definitionType, specificationType, value, selectableOptions);
         return definition.map(attributeDefinitionEntityMapper::toAttributeDefinition);
     }
 

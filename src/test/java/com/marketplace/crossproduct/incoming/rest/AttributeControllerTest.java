@@ -1,6 +1,7 @@
 package com.marketplace.crossproduct.incoming.rest;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import com.marketplace.crossproduct.core.usecase.createattributedefinition.CreateAttributeDefinitionInput;
 import com.marketplace.crossproduct.core.usecase.createattributedefinition.CreateAttributeDefinitionOutput;
@@ -24,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Set;
@@ -47,7 +47,6 @@ class AttributeControllerTest {
     private CreateAttributeValueUseCase createAttributeValueUseCase;
     @Mock
     private UpdateAttributeValueUseCase updateAttributeValueUseCase;
-
     @Mock
     private CreateAttributeDefinitionMapper createAttributeDefinitionMapper;
     @Mock
@@ -61,33 +60,35 @@ class AttributeControllerTest {
     @Test
     void testCreateAttributeDefinition_success() {
         var requestDto = new CreateAttributeDefinitionRequestDto(
-                1L, "Color", "TEXT", 1L, Set.of("Red", "Blue")
+                1L, "Color", "TEXT", "TEXT_FORMAT", "something",  Set.of("Red", "Blue")
         );
 
         var input = CreateAttributeDefinitionInput.builder()
                 .name("Color")
-                .type("TEXT")
-                .specificationId(10L)
+                .definitionType("TEXT")
+                .specificationType("TEXT_FORMAT")
+                .value("something")
                 .selectableOptions(Set.of("Red", "Blue"))
                 .build();
 
         var output = CreateAttributeDefinitionOutput.builder()
                 .id(123L)
                 .name("Color")
-                .type(AttributeDefinitionType.TEXT)
-                .specificationId(10L)
+                .definitionType(AttributeDefinitionType.TEXT)
+                .specificationType(AttributeDefinitionSpecificationType.TEXT_FORMAT)
+                .value("something")
                 .selectableOptions(Set.of("Red", "Blue"))
                 .build();
 
         var expectedResponse = new CreateAttributeDefinitionResponseDto(
-                123L, "Color", AttributeDefinitionType.TEXT, 10L, Set.of("Red", "Blue")
+                123L,"Color", AttributeDefinitionType.TEXT, AttributeDefinitionSpecificationType.TEXT_FORMAT, "something",  Set.of("Red", "Blue")
         );
 
         when(createAttributeDefinitionMapper.toCreateAttributeDefinitionInput(requestDto)).thenReturn(input);
         when(createAttributeDefinitionUseCase.execute(input)).thenReturn(output);
         when(createAttributeDefinitionMapper.toCreateAttributeDefinitionResponseDto(output)).thenReturn(expectedResponse);
 
-        ResponseEntity<CreateAttributeDefinitionResponseDto> response = attributeController.createAttributeDefinition(requestDto);
+        var response = attributeController.createAttributeDefinition(requestDto);
 
         assertNotNull(response);
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -102,13 +103,14 @@ class AttributeControllerTest {
 
     @Test
     void testCreateAttributeDefinition_duplicate_shouldThrowException() {
-        var requestDto = new CreateAttributeDefinitionRequestDto(1L, "Color", "TEXT", 10L, Set.of("Red", "Blue")
+        var requestDto = new CreateAttributeDefinitionRequestDto(1L, "Color", "TEXT", "TEXT_FORMAT", "something", Set.of("Red", "Blue")
         );
 
         var input = CreateAttributeDefinitionInput.builder()
                 .name("Color")
-                .type("TEXT")
-                .specificationId(10L)
+                .definitionType("TEXT")
+                .specificationType("TEXT_FORMAT")
+                .value("something")
                 .selectableOptions(Set.of("Red", "Blue"))
                 .build();
 

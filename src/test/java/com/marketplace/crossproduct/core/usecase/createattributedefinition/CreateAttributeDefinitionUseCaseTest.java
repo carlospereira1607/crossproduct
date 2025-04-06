@@ -1,10 +1,9 @@
 package com.marketplace.crossproduct.core.usecase.createattributedefinition;
 
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
-import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecification;
+import com.marketplace.crossproduct.core.model.AttributeDefinitionSpecificationType;
 import com.marketplace.crossproduct.core.model.AttributeDefinitionType;
 import com.marketplace.crossproduct.core.service.AttributeDefinitionService;
-import com.marketplace.crossproduct.core.service.AttributeDefinitionSpecificationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -27,70 +31,68 @@ class CreateAttributeDefinitionUseCaseTest {
     @Mock
     private AttributeDefinitionService attributeDefinitionService;
 
-    @Mock
-    private AttributeDefinitionSpecificationService specificationService;
-
     @InjectMocks
-    private CreateAttributeDefinitionUseCase useCase;
+    private CreateAttributeDefinitionUseCase createAttributeDefinitionUseCase;
 
     private CreateAttributeDefinitionInput input;
-    private AttributeDefinitionSpecification spec;
-    private AttributeDefinition savedDef;
+    private AttributeDefinition savedAttributeDefinition;
+    private Set<String> selectableOptions;
 
     @BeforeEach
     void setUp() {
+        selectableOptions = new HashSet<>(Arrays.asList("option1", "option2"));
         input = CreateAttributeDefinitionInput.builder()
-                .name("Color")
-                .type("TEXT")
-                .specificationId(10L)
-                .selectableOptions(Set.of("Red", "Blue"))
+                .name("Test Attribute")
+                .definitionType("TEXT")
+                .specificationType("TEXT_FORMAT")
+                .value("Test Value")
+                .selectableOptions(selectableOptions)
                 .build();
 
-        spec = AttributeDefinitionSpecification.builder()
-                .id(10L)
-                .build();
-
-        savedDef = AttributeDefinition.builder()
-                .id(99L)
-                .name("Color")
-                .type(AttributeDefinitionType.TEXT)
-                .specification(spec)
-                .selectableOptions(Set.of("Red", "Blue"))
+        savedAttributeDefinition = AttributeDefinition.builder()
+                .id(1L)
+                .name("Test Attribute")
+                .definitionType(AttributeDefinitionType.TEXT)
+                .specificationType(AttributeDefinitionSpecificationType.TEXT_FORMAT)
+                .value("Test Value")
+                .selectableOptions(selectableOptions)
                 .build();
     }
 
     @Test
-    void testExecute_successfulCreation() {
-        when(attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any())).thenReturn(Optional.empty());
-        when(specificationService.findById(10L)).thenReturn(Optional.of(spec));
-        when(attributeDefinitionService.save("Color", AttributeDefinitionType.TEXT, spec, Set.of("Red", "Blue"))).thenReturn(savedDef);
+    void testExecuteWhenAttributeDefinitionExists() {
+        when(attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(
+                any(), any(), any(), any(), any())).thenReturn(Optional.of(savedAttributeDefinition));
 
-        var result = useCase.execute(input);
+        var exception = assertThrows(RuntimeException.class, () -> {
+            createAttributeDefinitionUseCase.execute(input);
+        });
 
-        assertNotNull(result);
-        assertEquals(99L, result.getId());
-        assertEquals("Color", result.getName());
-        assertEquals("TEXT", result.getType().name());
-        assertEquals(10L, result.getSpecificationId());
-        assertEquals(Set.of("Red", "Blue"), result.getSelectableOptions());
+        assertEquals("Duplicated attribute definition", exception.getMessage());
+        verify(attributeDefinitionService).findByNameAndTypeAndSpecificationIdAndSelectableOptions(
+                any(), any(), any(), any(), any());
+        verifyNoMoreInteractions(attributeDefinitionService);
     }
 
     @Test
-    void testExecute_existingAttributeDefinition_throwsException() {
-        when(attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any()))
-                .thenReturn(Optional.of(savedDef));
+    void testExecuteWhenAttributeDefinitionDoesNotExist() {
+        when(attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(
+                any(), any(), any(), any(), any())).thenReturn(Optional.empty());
 
-        var ex = assertThrows(RuntimeException.class, () -> useCase.execute(input));
-        assertEquals("Duplicated attribute definition", ex.getMessage());
+        when(attributeDefinitionService.save(any(), any(), any(), any(), any())).thenReturn(savedAttributeDefinition);
+
+        var output = createAttributeDefinitionUseCase.execute(input);
+
+        assertNotNull(output);
+        assertEquals(1L, output.getId());
+        assertEquals("Test Attribute", output.getName());
+        assertEquals(AttributeDefinitionType.TEXT, output.getDefinitionType());
+        assertEquals(AttributeDefinitionSpecificationType.TEXT_FORMAT, output.getSpecificationType());
+        assertEquals("Test Value", output.getValue());
+        assertEquals(selectableOptions, output.getSelectableOptions());
+
+        verify(attributeDefinitionService).findByNameAndTypeAndSpecificationIdAndSelectableOptions(
+                any(), any(), any(), any(), any());
+        verify(attributeDefinitionService).save(any(), any(), any(), any(), any());
     }
-
-    @Test
-    void testExecute_specificationNotFound_throwsException() {
-        when(attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any())).thenReturn(Optional.empty());
-        when(specificationService.findById(10L)).thenReturn(Optional.empty());
-
-        var ex = assertThrows(RuntimeException.class, () -> useCase.execute(input));
-        assertEquals("Could not find attribute definition specification", ex.getMessage());
-    }
-
 }

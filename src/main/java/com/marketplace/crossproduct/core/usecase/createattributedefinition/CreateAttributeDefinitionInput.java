@@ -10,7 +10,8 @@ import java.util.Set;
 @Builder
 public class CreateAttributeDefinitionInput extends UseCaseInput {
     private String name;
-    private String type;
-    private Long specificationId;
+    private String definitionType;
+    private String specificationType;
+    private String value;
     private Set<String> selectableOptions;
 }

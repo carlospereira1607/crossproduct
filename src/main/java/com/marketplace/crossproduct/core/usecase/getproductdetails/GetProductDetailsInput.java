@@ -8,4 +8,6 @@ import lombok.Getter;
 @Builder
 public class GetProductDetailsInput extends UseCaseInput {
     private Long productId;
+    private Long portalId;
+    private Long definitionId;
 }
