@@ -7,10 +7,10 @@ import java.io.Serializable;
 
 @Data
 @Embeddable
-public class PortalProductAttributeValueId implements Serializable {
+public class PortalProductAttributeDefinitionId implements Serializable {
 
     private Long portalId;
     private Long productId;
-    private Long attributeValueId;
+    private Long attributeDefinitionId;
 
 }

@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -51,5 +52,8 @@ public class AttributeDefinitionEntity {
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttributeValueEntity> values;
+
+    @OneToMany(mappedBy = "attributeValue")
+    private Set<PortalProductAttributeDefinitionEntity> portalProductLinks = new HashSet<>();
 
 }
