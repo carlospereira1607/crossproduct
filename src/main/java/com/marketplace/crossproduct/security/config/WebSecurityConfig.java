@@ -1,5 +1,6 @@
 package com.marketplace.crossproduct.security.config;
 
+import com.marketplace.crossproduct.core.model.Portal;
 import com.marketplace.crossproduct.security.AuthEntryPointJwt;
 import com.marketplace.crossproduct.security.AuthTokenFilter;
 import com.marketplace.crossproduct.security.CustomUserDetailsService;
@@ -54,10 +55,25 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/product**").hasAuthority(Role.PLATFORM_ADMIN.name())
-                                .anyRequest()
-                                .authenticated()
+                                .requestMatchers("/api/attribute/definition").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
+                                                                                                        Role.PORTAL_ADMIN.name())
+                                .requestMatchers("/api/attribute/value").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
+                                                                                                   Role.PORTAL_ADMIN.name())
+
+                                .requestMatchers("/api/auth/create").hasAuthority(Role.PLATFORM_ADMIN.name())
+                                .requestMatchers("/api/auth/login").permitAll()
+
+                                .requestMatchers("/api/portal/**").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
+                                                                                             Role.PORTAL_ADMIN.name(),
+                                                                                             Role.PORTAL_USER.name())
+
+                                .requestMatchers("/api/product").hasAuthority(Role.PLATFORM_ADMIN.name())
+                                .requestMatchers("/api/product/standard").permitAll()
+                                .requestMatchers("/api/product/details/**").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
+                                                                                                      Role.PORTAL_ADMIN.name(),
+                                                                                                      Role.PORTAL_USER.name())
+
+                                .anyRequest().authenticated()
                 );
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

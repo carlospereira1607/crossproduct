@@ -10,6 +10,7 @@ import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResp
 import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResquestDto;
 import com.marketplace.crossproduct.incoming.dto.getproductdetails.GetProductDetailsResponseDto;
 import com.marketplace.crossproduct.incoming.mapper.ProductMapper;
+import com.marketplace.crossproduct.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/product")
@@ -40,6 +43,7 @@ public class ProductController {
     public ResponseEntity<GetProductDetailsResponseDto> getProductDetails(@PathVariable Long productId,
                                                                           @PathVariable Long portalId,
                                                                           @PathVariable Long definitionId)  {
+        //TODO validate portal id and role again
         var input = GetProductDetailsInput.builder().productId(productId).portalId(portalId).definitionId(definitionId).build();
         var product = getProductDetailsUseCase.execute(input);
         var response = productMapper.toGetProductDetailsResponseDto(product.getProduct());

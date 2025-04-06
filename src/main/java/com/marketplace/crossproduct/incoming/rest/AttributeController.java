@@ -43,6 +43,8 @@ public class AttributeController {
 
     @PostMapping("/value")
     public ResponseEntity<CreateAttributeValueResponseDto> createAttributeValue(@RequestBody CreateAttributeValueRequestDto request) {
+        //TODO if role is PLATFOM_ADMIN then value is not standard
+
         var input = createAttributeValueMapper.toCreateAttributeValueInput(request);
         var result = createAttributeValueUseCase.execute(input);
         var response = createAttributeValueMapper.toCreateAttributeValueResponseDto(result);
