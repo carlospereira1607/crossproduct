@@ -4,11 +4,13 @@ import com.marketplace.crossproduct.core.model.User;
 import com.marketplace.crossproduct.core.port.db.UserPortRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserPortRepository userPortRepository;
