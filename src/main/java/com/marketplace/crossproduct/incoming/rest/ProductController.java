@@ -8,7 +8,6 @@ import com.marketplace.crossproduct.core.usecase.getproductstandardattributes.Ge
 import com.marketplace.crossproduct.core.usecase.getproductstandardattributes.GetProductStandardAttributesUseCase;
 import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResponseDto;
 import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResquestDto;
-import com.marketplace.crossproduct.incoming.dto.createuser.CreateUserRequestDto;
 import com.marketplace.crossproduct.incoming.dto.getproductdetails.GetProductDetailsResponseDto;
 import com.marketplace.crossproduct.incoming.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;

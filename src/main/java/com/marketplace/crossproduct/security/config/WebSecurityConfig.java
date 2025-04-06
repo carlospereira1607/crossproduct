@@ -3,6 +3,7 @@ package com.marketplace.crossproduct.security.config;
 import com.marketplace.crossproduct.security.AuthEntryPointJwt;
 import com.marketplace.crossproduct.security.AuthTokenFilter;
 import com.marketplace.crossproduct.security.CustomUserDetailsService;
+import com.marketplace.crossproduct.security.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +55,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/auth/**").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/api/product**").hasAuthority(Role.PLATFORM_ADMIN.name())
+                                .anyRequest()
+                                .authenticated()
                 );
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
