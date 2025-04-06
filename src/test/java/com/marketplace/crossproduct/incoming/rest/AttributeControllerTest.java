@@ -195,7 +195,7 @@ class AttributeControllerTest {
     void testUpdateAttributeValue_success() {
         var definition = AttributeDefinition.builder().build();
 
-        var request = new UpdateAttributeValueRequestDto(definition.getId(), "Blue", false);
+        var request = new UpdateAttributeValueRequestDto(definition.getId(), 1L, 1L, "Blue", false);
         var input = UpdateAttributeValueInput.builder()
                 .value("Blue")
                 .isStandard(false)
