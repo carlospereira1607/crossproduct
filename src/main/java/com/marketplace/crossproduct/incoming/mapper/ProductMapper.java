@@ -3,6 +3,8 @@ package com.marketplace.crossproduct.incoming.mapper;
 import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.model.Product;
+import com.marketplace.crossproduct.core.usecase.createproduct.CreateProductUseCaseOutput;
+import com.marketplace.crossproduct.incoming.dto.createproduct.CreateProductResponseDto;
 import com.marketplace.crossproduct.incoming.dto.getproductdetails.AttributeDefinitionDetailsDto;
 import com.marketplace.crossproduct.incoming.dto.getproductdetails.AttributeValueDetailsDto;
 import com.marketplace.crossproduct.incoming.dto.getproductdetails.GetProductDetailsResponseDto;
@@ -17,4 +19,5 @@ public interface ProductMapper {
 
     AttributeDefinitionDetailsDto attributeValueToAttributeValueDetailsDto(AttributeDefinition definition);
 
+    CreateProductResponseDto toCreateProductResponseDto(CreateProductUseCaseOutput output);
 }

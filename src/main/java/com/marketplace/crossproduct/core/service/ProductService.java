@@ -21,4 +21,8 @@ public class ProductService {
     public Set<Product> findByPortalId(final Long portalId) {
         return productPortRepository.getByPortalId(portalId);
     }
+
+    public Product save(final String name) {
+        return productPortRepository.save(name);
+    }
 }

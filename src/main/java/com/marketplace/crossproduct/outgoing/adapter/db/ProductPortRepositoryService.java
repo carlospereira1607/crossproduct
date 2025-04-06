@@ -3,6 +3,7 @@ package com.marketplace.crossproduct.outgoing.adapter.db;
 import com.marketplace.crossproduct.core.model.Product;
 import com.marketplace.crossproduct.core.port.db.ProductPortRepository;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.ProductEntityRepository;
+import com.marketplace.crossproduct.outgoing.adapter.db.repository.entity.ProductEntity;
 import com.marketplace.crossproduct.outgoing.adapter.db.repository.mapper.ProductEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -30,8 +31,9 @@ public class ProductPortRepositoryService implements ProductPortRepository {
     }
 
     @Override
-    public Optional<Product> getByProductAndPortalId(Long productId, Long portalId) {
-        return Optional.empty();
+    public Product save(String name) {
+        return productEntityMapper.toProduct(productEntityRepository.save(ProductEntity.builder().name(name).build()));
     }
+
 }
 
