@@ -67,7 +67,6 @@ class AttributeControllerTest {
         var input = CreateAttributeDefinitionInput.builder()
                 .name("Color")
                 .type("TEXT")
-                .portalId(1L)
                 .specificationId(10L)
                 .selectableOptions(Set.of("Red", "Blue"))
                 .build();
@@ -109,7 +108,6 @@ class AttributeControllerTest {
         var input = CreateAttributeDefinitionInput.builder()
                 .name("Color")
                 .type("TEXT")
-                .portalId(1L)
                 .specificationId(10L)
                 .selectableOptions(Set.of("Red", "Blue"))
                 .build();

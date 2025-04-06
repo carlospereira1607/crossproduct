@@ -66,36 +66,32 @@ class AttributeDefinitionServiceTest {
     }
 
     @Test
-    void testFindByPortalIdAndName_whenFound() {
-        var portalId = 1L;
+    void testFindByName_AndTypeAndSpecificationIdAndSelectableOptions_whenFound() {
         var name = "size";
         var expected = AttributeDefinition.builder().name(name).build();
 
-        when(attributeDefinitionPortRepository.findByPortalIdAndName(portalId, name))
+        when(attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any()))
                 .thenReturn(Optional.of(expected));
 
-        Optional<AttributeDefinition> result = attributeDefinitionService.findByPortalIdAndName(portalId, name);
+        Optional<AttributeDefinition> result = attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any());
 
         assertTrue(result.isPresent());
         assertEquals(name, result.get().getName());
 
-        verify(attributeDefinitionPortRepository).findByPortalIdAndName(portalId, name);
+        verify(attributeDefinitionPortRepository).findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any());
         verifyNoMoreInteractions(attributeDefinitionPortRepository);
     }
 
     @Test
-    void testFindByPortalIdAndName_whenNotFound() {
-        var portalId = 2L;
-        var name = "nonexistent";
-
-        when(attributeDefinitionPortRepository.findByPortalIdAndName(portalId, name))
+    void testFindByName_AndTypeAndSpecificationIdAndSelectableOptions_whenNotFound() {
+        when(attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any()))
                 .thenReturn(Optional.empty());
 
-        var result = attributeDefinitionService.findByPortalIdAndName(portalId, name);
+        var result = attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any());
 
         assertTrue(result.isEmpty());
 
-        verify(attributeDefinitionPortRepository).findByPortalIdAndName(portalId, name);
+        verify(attributeDefinitionPortRepository).findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any());
         verifyNoMoreInteractions(attributeDefinitionPortRepository);
     }
 

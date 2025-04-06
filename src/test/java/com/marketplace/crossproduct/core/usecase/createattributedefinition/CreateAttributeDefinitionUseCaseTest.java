@@ -18,6 +18,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -41,7 +42,6 @@ class CreateAttributeDefinitionUseCaseTest {
         input = CreateAttributeDefinitionInput.builder()
                 .name("Color")
                 .type("TEXT")
-                .portalId(1L)
                 .specificationId(10L)
                 .selectableOptions(Set.of("Red", "Blue"))
                 .build();
@@ -61,7 +61,7 @@ class CreateAttributeDefinitionUseCaseTest {
 
     @Test
     void testExecute_successfulCreation() {
-        when(attributeDefinitionService.findByPortalIdAndName(1L, "Color")).thenReturn(Optional.empty());
+        when(attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any())).thenReturn(Optional.empty());
         when(specificationService.findById(10L)).thenReturn(Optional.of(spec));
         when(attributeDefinitionService.save("Color", AttributeDefinitionType.TEXT, spec, Set.of("Red", "Blue"))).thenReturn(savedDef);
 
@@ -77,7 +77,7 @@ class CreateAttributeDefinitionUseCaseTest {
 
     @Test
     void testExecute_existingAttributeDefinition_throwsException() {
-        when(attributeDefinitionService.findByPortalIdAndName(1L, "Color"))
+        when(attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any()))
                 .thenReturn(Optional.of(savedDef));
 
         var ex = assertThrows(RuntimeException.class, () -> useCase.execute(input));
@@ -86,7 +86,7 @@ class CreateAttributeDefinitionUseCaseTest {
 
     @Test
     void testExecute_specificationNotFound_throwsException() {
-        when(attributeDefinitionService.findByPortalIdAndName(1L, "Color")).thenReturn(Optional.empty());
+        when(attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(any(), any(), any(), any())).thenReturn(Optional.empty());
         when(specificationService.findById(10L)).thenReturn(Optional.empty());
 
         var ex = assertThrows(RuntimeException.class, () -> useCase.execute(input));

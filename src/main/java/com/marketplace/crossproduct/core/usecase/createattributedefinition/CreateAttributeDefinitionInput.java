@@ -9,7 +9,6 @@ import java.util.Set;
 @Getter
 @Builder
 public class CreateAttributeDefinitionInput extends UseCaseInput {
-    private Long portalId;
     private String name;
     private String type;
     private Long specificationId;

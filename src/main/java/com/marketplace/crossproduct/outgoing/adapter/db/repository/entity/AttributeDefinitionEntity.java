@@ -38,7 +38,7 @@ public class AttributeDefinitionEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "attribute_type", nullable = false)
+    @Column(nullable = false)
     private AttributeDefinitionType type;
 
     @ManyToOne

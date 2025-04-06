@@ -18,10 +18,13 @@ public class CreateAttributeDefinitionUseCase implements UseCase<CreateAttribute
 
     @Override
     public CreateAttributeDefinitionOutput execute(final CreateAttributeDefinitionInput input) {
-        var existingDefinition = attributeDefinitionService.findByPortalIdAndName(input.getPortalId(), input.getName());
+        var existingDefinition = attributeDefinitionService.findByNameAndTypeAndSpecificationIdAndSelectableOptions(input.getName(),
+                                                                                                                                             input.getType(),
+                                                                                                                                             input.getSpecificationId(),
+                                                                                                                                             input.getSelectableOptions());
 
         if(existingDefinition.isPresent()) {
-            log.error("Attribute definition {} for portal {} already exists", input.getName(), input.getPortalId());
+            log.error("Attribute definition {} {} already exists", input.getName(), input.getType());
             throw new RuntimeException("Duplicated attribute definition");
         }
 
