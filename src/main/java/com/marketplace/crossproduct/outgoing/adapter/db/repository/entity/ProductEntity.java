@@ -31,6 +31,6 @@ public class ProductEntity {
     private String name;
 
     @OneToMany(mappedBy = "product")
-    private Set<PortalProductAttributeDefinitionEntity> attributeValues = new HashSet<>();
+    private Set<PortalProductAttributeDefinitionEntity> attributeSpecifications = new HashSet<>();
 
 }

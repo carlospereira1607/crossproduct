@@ -53,7 +53,7 @@ public class AttributeDefinitionEntity {
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AttributeValueEntity> values;
 
-    @OneToMany(mappedBy = "attributeValue")
+    @OneToMany(mappedBy = "definition")
     private Set<PortalProductAttributeDefinitionEntity> portalProductLinks = new HashSet<>();
 
 }
