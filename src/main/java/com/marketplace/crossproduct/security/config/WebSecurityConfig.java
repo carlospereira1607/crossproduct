@@ -59,7 +59,7 @@ public class WebSecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/attribute/definition").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
                                                                                                         Role.PORTAL_ADMIN.name())
-                                .requestMatchers("/api/attribute/specificationValue").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
+                                .requestMatchers("/api/attribute/value").hasAnyAuthority(Role.PLATFORM_ADMIN.name(),
                                                                                                    Role.PORTAL_ADMIN.name())
 
                                 .requestMatchers("/api/auth").permitAll()

@@ -41,7 +41,7 @@ public class AttributeController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PostMapping("/specificationValue")
+    @PostMapping("/value")
     public ResponseEntity<CreateAttributeValueResponseDto> createAttributeValue(@RequestBody CreateAttributeValueRequestDto request) {
         var input = createAttributeValueMapper.toCreateAttributeValueInput(request);
         var result = createAttributeValueUseCase.execute(input);
@@ -49,7 +49,7 @@ public class AttributeController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping("/specificationValue")
+    @PutMapping("/value")
     public ResponseEntity<UpdateAttributeValueResponseDto> updateAttributeValue(@RequestBody UpdateAttributeValueRequestDto request) {
         var input = updateAttributeValueMapper.toUpdateAttributeValueInput(request);
         var result = updateAttributeValueUseCase.execute(input);

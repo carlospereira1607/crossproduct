@@ -10,7 +10,8 @@ import java.util.Optional;
 
 public interface AttributeValueEntityRepository extends JpaRepository<AttributeValueEntity, Long> {
 
-    Optional<AttributeValueEntity> findByProductIdAndPortalIdAndDefinitionId(Long productId, Long portalId, Long definitionId);
+    @Query(value = "SELECT * FROM attribute_value WHERE product_id = :productId AND portal_id = :portalId AND definition_id = :definitionId", nativeQuery = true)
+    Optional<AttributeValueEntity> findByProductIdAndPortalIdAndDefinitionId(@Param("productId") Long productId, @Param("portalId") Long portalId, @Param("definitionId") Long definitionId);
 
     List<AttributeValueEntity> findByProductId(Long productId);
 
