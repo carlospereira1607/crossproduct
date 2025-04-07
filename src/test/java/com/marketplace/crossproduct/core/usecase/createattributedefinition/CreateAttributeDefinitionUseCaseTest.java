@@ -60,23 +60,20 @@ class CreateAttributeDefinitionUseCaseTest {
 
     @Test
     void testExecuteWhenAttributeDefinitionExists() {
-        when(attributeDefinitionService.findByNameAndTypeAndSpecification(
-                any(), any(), any(), any(), any())).thenReturn(Optional.of(savedAttributeDefinition));
+        when(attributeDefinitionService.findByNameAndTypeAndSpecification(any(), any(), any())).thenReturn(Optional.of(savedAttributeDefinition));
 
         var exception = assertThrows(RuntimeException.class, () -> {
             createAttributeDefinitionUseCase.execute(input);
         });
 
         assertEquals("Duplicated attribute definition", exception.getMessage());
-        verify(attributeDefinitionService).findByNameAndTypeAndSpecification(
-                any(), any(), any(), any(), any());
+        verify(attributeDefinitionService).findByNameAndTypeAndSpecification(any(), any(), any());
         verifyNoMoreInteractions(attributeDefinitionService);
     }
 
     @Test
     void testExecuteWhenAttributeDefinitionDoesNotExist() {
-        when(attributeDefinitionService.findByNameAndTypeAndSpecification(
-                any(), any(), any(), any(), any())).thenReturn(Optional.empty());
+        when(attributeDefinitionService.findByNameAndTypeAndSpecification(any(), any(), any())).thenReturn(Optional.empty());
 
         when(attributeDefinitionService.save(any(), any(), any(), any(), any())).thenReturn(savedAttributeDefinition);
 
@@ -90,8 +87,7 @@ class CreateAttributeDefinitionUseCaseTest {
         assertEquals("Test Value", output.getValue());
         assertEquals(selectableOptions, output.getSelectableOptions());
 
-        verify(attributeDefinitionService).findByNameAndTypeAndSpecification(
-                any(), any(), any(), any(), any());
+        verify(attributeDefinitionService).findByNameAndTypeAndSpecification(any(), any(), any());
         verify(attributeDefinitionService).save(any(), any(), any(), any(), any());
     }
 }

@@ -4,10 +4,7 @@ import com.marketplace.crossproduct.core.model.AttributeDefinition;
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.model.Portal;
 import com.marketplace.crossproduct.core.model.Product;
-import com.marketplace.crossproduct.core.service.AttributeDefinitionService;
 import com.marketplace.crossproduct.core.service.AttributeValueService;
-import com.marketplace.crossproduct.core.service.PortalService;
-import com.marketplace.crossproduct.core.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,15 +25,6 @@ class UpdateAttributeValueUseCaseTest {
 
     @Mock
     private AttributeValueService attributeValueService;
-
-    @Mock
-    private AttributeDefinitionService attributeDefinitionService;
-
-    @Mock
-    private PortalService portalService;
-
-    @Mock
-    private ProductService productService;
 
     @InjectMocks
     private UpdateAttributeValueUseCase updateAttributeValueUseCase;
@@ -68,9 +56,6 @@ class UpdateAttributeValueUseCaseTest {
         when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
                 .thenReturn(Optional.of(existingValue));
 
-        when(attributeDefinitionService.findById(input.getDefinitionId())).thenReturn(Optional.of(definition));
-        when(portalService.findById(input.getPortalId())).thenReturn(Optional.of(portal));
-        when(productService.findById(input.getProductId())).thenReturn(Optional.of(product));
         when(attributeValueService.update(existingValue)).thenReturn(existingValue);
 
         UpdateAttributeValueOutput result = updateAttributeValueUseCase.execute(input);
@@ -93,49 +78,7 @@ class UpdateAttributeValueUseCaseTest {
             updateAttributeValueUseCase.execute(input);
         });
 
-        assertEquals("Could not find attribute specificationValue to update", exception.getMessage());
-    }
-
-    @Test
-    void testExecute_ThrowsExceptionWhenDefinitionNotFound() {
-        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
-                .thenReturn(Optional.of(existingValue));
-        when(attributeDefinitionService.findById(input.getDefinitionId())).thenReturn(Optional.empty());
-
-        var exception = assertThrows(RuntimeException.class, () -> {
-            updateAttributeValueUseCase.execute(input);
-        });
-
-        assertEquals("Could not find attribute definition to set for specificationValue", exception.getMessage());
-    }
-
-    @Test
-    void testExecute_ThrowsExceptionWhenPortalNotFound() {
-        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
-                .thenReturn(Optional.of(existingValue));
-        when(attributeDefinitionService.findById(input.getDefinitionId())).thenReturn(Optional.of(definition));
-        when(portalService.findById(input.getPortalId())).thenReturn(Optional.empty());
-
-        var exception = assertThrows(RuntimeException.class, () -> {
-            updateAttributeValueUseCase.execute(input);
-        });
-
-        assertEquals("Could not find portal to set for specificationValue", exception.getMessage());
-    }
-
-    @Test
-    void testExecute_ThrowsExceptionWhenProductNotFound() {
-        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
-                .thenReturn(Optional.of(existingValue));
-        when(attributeDefinitionService.findById(input.getDefinitionId())).thenReturn(Optional.of(definition));
-        when(portalService.findById(input.getPortalId())).thenReturn(Optional.of(portal));
-        when(productService.findById(input.getProductId())).thenReturn(Optional.empty());
-
-        var exception = assertThrows(RuntimeException.class, () -> {
-            updateAttributeValueUseCase.execute(input);
-        });
-
-        assertEquals("Could not find product to set for specificationValue", exception.getMessage());
+        assertEquals("Could not find attribute value to update", exception.getMessage());
     }
 
 }

@@ -64,19 +64,15 @@ class AttributeDefinitionServiceTest {
 
     @Test
     void testFindByNameAndTypeAndSpecification() {
-        when(attributeDefinitionPortRepository.findByNameAndTypeAndSpecification(
-                any(), any(), any(), any(), any()))
-                .thenReturn(Optional.of(attributeDefinition));
+        when(attributeDefinitionPortRepository.findByNameAndTypeAndSpecification(any(), any(), any())).thenReturn(Optional.of(attributeDefinition));
 
         var foundDefinition = attributeDefinitionService.findByNameAndTypeAndSpecification(
-                "Test Attribute", AttributeDefinitionType.TEXT, AttributeDefinitionSpecificationType.TEXT_FORMAT,
-                "Test Value", selectableOptions
+                "Test Attribute", AttributeDefinitionType.TEXT, AttributeDefinitionSpecificationType.TEXT_FORMAT
         );
 
         assertTrue(foundDefinition.isPresent());
         assertEquals("Test Attribute", foundDefinition.get().getName());
-        verify(attributeDefinitionPortRepository).findByNameAndTypeAndSpecification(
-                any(), any(), any(), any(), any());
+        verify(attributeDefinitionPortRepository).findByNameAndTypeAndSpecification(any(), any(), any());
     }
 
     @Test
