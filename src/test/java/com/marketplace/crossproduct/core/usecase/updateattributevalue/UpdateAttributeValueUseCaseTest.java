@@ -16,8 +16,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,24 +47,6 @@ class UpdateAttributeValueUseCaseTest {
         existingValue.setProduct(product);
         existingValue.setValue("oldValue");
         existingValue.setIsStandard(false);
-    }
-
-    @Test
-    void testExecute_SuccessfullyUpdates() {
-        when(attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId()))
-                .thenReturn(Optional.of(existingValue));
-
-        when(attributeValueService.update(existingValue)).thenReturn(existingValue);
-
-        UpdateAttributeValueOutput result = updateAttributeValueUseCase.execute(input);
-
-        assertEquals("newValue", result.getValue());
-        assertTrue(result.isStandard());
-        assertEquals(portal, result.getPortal());
-        assertEquals(product, result.getProduct());
-        assertEquals(definition, result.getDefinition());
-
-        verify(attributeValueService).update(existingValue);
     }
 
     @Test

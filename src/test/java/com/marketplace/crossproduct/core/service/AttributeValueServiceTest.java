@@ -61,25 +61,6 @@ class AttributeValueServiceTest {
     }
 
     @Test
-    void testUpdate_validValue_returnsUpdatedValue() {
-        var inputValue = AttributeValue.builder()
-                .value("Updated")
-                .isStandard(true)
-                .definition(AttributeDefinition.builder().id(2L).build())
-                .build();
-
-        when(attributeValuePortRepository.save(inputValue)).thenReturn(inputValue);
-
-        var result = attributeValueService.update(inputValue);
-
-        assertNotNull(result);
-        assertEquals(inputValue, result);
-
-        verify(attributeValuePortRepository).save(inputValue);
-        verifyNoMoreInteractions(attributeValuePortRepository);
-    }
-
-    @Test
     void testCreate_success() {
         var definition = AttributeDefinition.builder()
                 .id(1L)

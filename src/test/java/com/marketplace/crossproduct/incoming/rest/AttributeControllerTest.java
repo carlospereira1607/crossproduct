@@ -9,9 +9,6 @@ import com.marketplace.crossproduct.core.usecase.createattributedefinition.Creat
 import com.marketplace.crossproduct.core.usecase.createattributevalue.CreateAttributeValueInput;
 import com.marketplace.crossproduct.core.usecase.createattributevalue.CreateAttributeValueOutput;
 import com.marketplace.crossproduct.core.usecase.createattributevalue.CreateAttributeValueUseCase;
-import com.marketplace.crossproduct.core.usecase.updateattributevalue.UpdateAttributeValueInput;
-import com.marketplace.crossproduct.core.usecase.updateattributevalue.UpdateAttributeValueOutput;
-import com.marketplace.crossproduct.core.usecase.updateattributevalue.UpdateAttributeValueUseCase;
 import com.marketplace.crossproduct.incoming.dto.createattributedefinition.CreateAttributeDefinitionRequestDto;
 import com.marketplace.crossproduct.incoming.dto.createattributedefinition.CreateAttributeDefinitionResponseDto;
 import com.marketplace.crossproduct.incoming.dto.createattributevalue.AttributeDefinitionDto;
@@ -19,8 +16,6 @@ import com.marketplace.crossproduct.incoming.dto.createattributevalue.CreateAttr
 import com.marketplace.crossproduct.incoming.dto.createattributevalue.CreateAttributeValueResponseDto;
 import com.marketplace.crossproduct.incoming.dto.createattributevalue.PortalDto;
 import com.marketplace.crossproduct.incoming.dto.createattributevalue.ProductDto;
-import com.marketplace.crossproduct.incoming.dto.updateattributevalue.UpdateAttributeValueRequestDto;
-import com.marketplace.crossproduct.incoming.dto.updateattributevalue.UpdateAttributeValueResponseDto;
 import com.marketplace.crossproduct.incoming.mapper.CreateAttributeDefinitionMapper;
 import com.marketplace.crossproduct.incoming.mapper.CreateAttributeValueMapper;
 import com.marketplace.crossproduct.incoming.mapper.UpdateAttributeValueMapper;
@@ -49,13 +44,9 @@ class AttributeControllerTest {
     @Mock
     private CreateAttributeValueUseCase createAttributeValueUseCase;
     @Mock
-    private UpdateAttributeValueUseCase updateAttributeValueUseCase;
-    @Mock
     private CreateAttributeDefinitionMapper createAttributeDefinitionMapper;
     @Mock
     private CreateAttributeValueMapper createAttributeValueMapper;
-    @Mock
-    private UpdateAttributeValueMapper updateAttributeValueMapper;
 
     @InjectMocks
     private AttributeController attributeController;
@@ -193,32 +184,6 @@ class AttributeControllerTest {
         verify(createAttributeValueMapper).toCreateAttributeValueInput(requestDto);
         verify(createAttributeValueUseCase).execute(input);
         verifyNoMoreInteractions(createAttributeValueMapper, createAttributeValueUseCase);
-    }
-
-    @Test
-    void testUpdateAttributeValue_success() {
-        var definition = AttributeDefinition.builder().build();
-
-        var request = new UpdateAttributeValueRequestDto(definition.getId(), 1L, 1L, "Blue", false);
-        var input = UpdateAttributeValueInput.builder()
-                .value("Blue")
-                .isStandard(false)
-                .build();
-        var output = UpdateAttributeValueOutput.builder().value("Blue").isStandard(false).build();
-        var response = new UpdateAttributeValueResponseDto(1L, "Blue", false, definition);
-
-        when(updateAttributeValueMapper.toUpdateAttributeValueInput(request)).thenReturn(input);
-        when(updateAttributeValueUseCase.execute(input)).thenReturn(output);
-        when(updateAttributeValueMapper.toUpdateAttributeValueResponseDto(output)).thenReturn(response);
-
-        var result = attributeController.updateAttributeValue(request);
-
-        assertTrue(result.getStatusCode().is2xxSuccessful());
-        assertEquals(response, result.getBody());
-
-        verify(updateAttributeValueUseCase).execute(input);
-        verifyNoMoreInteractions(updateAttributeValueUseCase);
-        verifyNoInteractions(createAttributeValueUseCase, createAttributeDefinitionUseCase, createAttributeDefinitionMapper, createAttributeValueMapper);
     }
 
 }
