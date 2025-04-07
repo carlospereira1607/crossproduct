@@ -50,11 +50,10 @@ public class AttributeController {
     }
 
     @PutMapping("/value")
-    public ResponseEntity<UpdateAttributeValueResponseDto> updateAttributeValue(@RequestBody UpdateAttributeValueRequestDto request) {
+    public ResponseEntity updateAttributeValue(@RequestBody UpdateAttributeValueRequestDto request) {
         var input = updateAttributeValueMapper.toUpdateAttributeValueInput(request);
-        var result = updateAttributeValueUseCase.execute(input);
-        var response = updateAttributeValueMapper.toUpdateAttributeValueResponseDto(result);
-        return ResponseEntity.ok().body(response);
+        updateAttributeValueUseCase.execute(input);
+        return ResponseEntity.noContent().build();
     }
 
 }

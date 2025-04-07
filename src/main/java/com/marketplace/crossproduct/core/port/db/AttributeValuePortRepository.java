@@ -15,4 +15,6 @@ public interface AttributeValuePortRepository {
 
     Set<AttributeValue> findByProductId(Long productId);
 
+    void updateValueAndIsStandard(Long portalId, Long productId, Long definitionId, String value, Boolean isStandard);
+
 }

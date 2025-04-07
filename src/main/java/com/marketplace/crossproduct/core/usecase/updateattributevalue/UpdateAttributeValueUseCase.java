@@ -16,20 +16,11 @@ public class UpdateAttributeValueUseCase implements UseCase<UpdateAttributeValue
 
     @Override
     public UpdateAttributeValueOutput execute(final UpdateAttributeValueInput input) {
-        var existingValue = attributeValueService.findByPortalProductDefinition(input.getPortalId(),
-                                                                                              input.getProductId(),
-                                                                                              input.getDefinitionId())
-                                                                .orElseThrow(() -> new DataNotFoundException("Could not find attribute value to update"));
-        existingValue.setValue(input.getValue());
-        existingValue.setIsStandard(input.getIsStandard());
-
-        var result = attributeValueService.update(existingValue);
+        attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId())
+                                                            .orElseThrow(() -> new DataNotFoundException("Could not find attribute value to update"));
+        attributeValueService.update(input.getPortalId(), input.getProductId(), input.getDefinitionId(),
+                                     input.getValue(), input.getIsStandard());
         return UpdateAttributeValueOutput.builder()
-                .value(result.getValue())
-                .isStandard(result.getIsStandard())
-                .portal(result.getPortal())
-                .product(result.getProduct())
-                .definition(result.getDefinition())
                 .build();
     }
 

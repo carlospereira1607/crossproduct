@@ -23,8 +23,8 @@ public class AttributeValueService {
         return attributeValuePortRepository.findByPortalProductDefinition(portalId, productId, definitionId);
     }
 
-    public AttributeValue update(final AttributeValue value) {
-        return attributeValuePortRepository.save(value);
+    public void update(final Long portalId, final Long productId, final Long definitionId, final String value, boolean isStandard) {
+        attributeValuePortRepository.updateValueAndIsStandard(portalId, productId, definitionId, value, isStandard);
     }
 
     public AttributeValue create(final AttributeDefinition attributeDefinition, final Product product, final Portal portal, final String value, boolean isStandard) {

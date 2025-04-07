@@ -25,6 +25,11 @@ public class AttributeValueRepositoryService implements AttributeValuePortReposi
     }
 
     @Override
+    public void updateValueAndIsStandard(final Long portalId, final Long productId, final Long definitionId, final String value, final Boolean isStandard) {
+        repository.updateValueAndIsStandard(value, isStandard, portalId, productId, definitionId);
+    }
+
+    @Override
     public AttributeValue save(final AttributeValue entry) {
         var id = new AttributeValueId(entry.getPortal().getId(), entry.getProduct().getId(), entry.getDefinition().getId());
         var entity = mapper.toAttributeValueEntity(entry, id);
