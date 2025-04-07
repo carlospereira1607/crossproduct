@@ -1,5 +1,6 @@
 package com.marketplace.crossproduct.core.usecase.auth;
 
+import com.marketplace.crossproduct.core.exception.InvalidCredentialsException;
 import com.marketplace.crossproduct.core.service.UserService;
 import com.marketplace.crossproduct.core.usecase.UseCase;
 import com.marketplace.crossproduct.security.JwtUtils;
@@ -16,10 +17,10 @@ public class AuthenticateUserUseCase implements UseCase<AuthenticateUserInput, A
     @Override
     public AuthenticateUserOutput execute(final AuthenticateUserInput input) {
         var user = userService.getByUsername(input.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new InvalidCredentialsException("User not found"));
 
         if(!user.getPassword().equals(input.getPassword())) {
-            throw new RuntimeException("User could not be authenticated: " + user.getUsername());
+            throw new InvalidCredentialsException("User could not be authenticated");
         }
 
         var generatedToken = jwtUtils.generateToken(user);

@@ -1,6 +1,6 @@
 package com.marketplace.crossproduct.security.config;
 
-import com.marketplace.crossproduct.core.model.Portal;
+import com.marketplace.crossproduct.core.exception.CustomAccessDeniedHandler;
 import com.marketplace.crossproduct.security.AuthEntryPointJwt;
 import com.marketplace.crossproduct.security.AuthTokenFilter;
 import com.marketplace.crossproduct.security.CustomUserDetailsService;
@@ -24,6 +24,7 @@ public class WebSecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
     private final AuthEntryPointJwt unauthorizedHandler;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -47,8 +48,9 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .exceptionHandling(exceptionHandling ->
-                        exceptionHandling.authenticationEntryPoint(unauthorizedHandler)
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                                .accessDeniedHandler(accessDeniedHandler)
+                                .authenticationEntryPoint(unauthorizedHandler)
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
