@@ -1,5 +1,6 @@
 package com.marketplace.crossproduct.core.usecase.getproductstandardattributes;
 
+import com.marketplace.crossproduct.core.exception.DataNotFoundException;
 import com.marketplace.crossproduct.core.model.AttributeValue;
 import com.marketplace.crossproduct.core.service.AttributeValueService;
 import com.marketplace.crossproduct.core.service.ProductService;
@@ -25,7 +26,7 @@ public class GetProductStandardAttributesUseCase implements UseCase<GetProductSt
         var attributeValues = attributeValueService.findByProductId(input.getProductId());
 
         if(attributeValues.isEmpty()) {
-            throw new RuntimeException("There are no attribute values for given product");
+            throw new DataNotFoundException("There are no attribute values for given product");
         }
 
         product.setAttributes(filterForStandard(attributeValues));

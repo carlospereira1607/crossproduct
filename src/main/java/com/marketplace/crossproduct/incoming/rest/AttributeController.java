@@ -8,7 +8,6 @@ import com.marketplace.crossproduct.incoming.dto.createattributedefinition.Creat
 import com.marketplace.crossproduct.incoming.dto.createattributevalue.CreateAttributeValueRequestDto;
 import com.marketplace.crossproduct.incoming.dto.createattributevalue.CreateAttributeValueResponseDto;
 import com.marketplace.crossproduct.incoming.dto.updateattributevalue.UpdateAttributeValueRequestDto;
-import com.marketplace.crossproduct.incoming.dto.updateattributevalue.UpdateAttributeValueResponseDto;
 import com.marketplace.crossproduct.incoming.mapper.CreateAttributeDefinitionMapper;
 import com.marketplace.crossproduct.incoming.mapper.CreateAttributeValueMapper;
 import com.marketplace.crossproduct.incoming.mapper.UpdateAttributeValueMapper;
