@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,11 +25,9 @@ public class AttributeDefinitionRepositoryService implements AttributeDefinition
     }
 
     @Override
-    public Optional<AttributeDefinition> findByNameAndTypeAndSpecificationIdAndSelectableOptions(final String name, final AttributeDefinitionType definitionType,
-                                                                                                 final AttributeDefinitionSpecificationType specificationType,
-                                                                                                 final String value,
-                                                                                                 final Set<String> selectableOptions) {
-        var definition = repository.findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(name, definitionType.name(), specificationType.name(), value, selectableOptions);
+    public Optional<AttributeDefinition> findByNameAndTypeAndSpecification(final String name, final AttributeDefinitionType definitionType,
+                                                                           final AttributeDefinitionSpecificationType specificationType) {
+        var definition = repository.findByNameAndTypeAndSpecificationType(name, definitionType.name(), specificationType.name());
         return definition.map(attributeDefinitionEntityMapper::toAttributeDefinition);
     }
 

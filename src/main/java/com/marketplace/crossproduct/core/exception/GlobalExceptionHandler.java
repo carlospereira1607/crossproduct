@@ -26,6 +26,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(DuplicatedEntryException.class)
+    public ResponseEntity<ApiError> handleRuntime(DuplicatedEntryException ex) {
+        ApiError error = new ApiError("ERR_DUPLICATED_DATA", ex.getMessage(), HttpStatus.CONFLICT.value());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiError> handleRuntime(RuntimeException ex) {
         ApiError error = new ApiError("ERR_INTERNAL", ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());

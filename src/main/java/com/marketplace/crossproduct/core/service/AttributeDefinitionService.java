@@ -32,11 +32,9 @@ public class AttributeDefinitionService {
         return attributeDefinitionPortRepository.save(attributeDefinition);
     }
 
-    public Optional<AttributeDefinition> findByNameAndTypeAndSpecificationIdAndSelectableOptions(final String name, final AttributeDefinitionType definitionType,
-                                                                                                 final AttributeDefinitionSpecificationType specificationType,
-                                                                                                 final String specificationValue,
-                                                                                                 final Set<String> selectableOptions) {
-        return attributeDefinitionPortRepository.findByNameAndTypeAndSpecificationIdAndSelectableOptions(name, definitionType, specificationType, specificationValue, selectableOptions);
+    public Optional<AttributeDefinition> findByNameAndTypeAndSpecification(final String name, final AttributeDefinitionType definitionType,
+                                                                           final AttributeDefinitionSpecificationType specificationType) {
+        return attributeDefinitionPortRepository.findByNameAndTypeAndSpecification(name, definitionType, specificationType);
     }
 
     public Optional<AttributeDefinition> findById(final Long id) {

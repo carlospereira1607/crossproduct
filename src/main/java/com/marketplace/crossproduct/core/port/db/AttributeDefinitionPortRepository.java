@@ -11,10 +11,8 @@ public interface AttributeDefinitionPortRepository {
 
     AttributeDefinition save(final AttributeDefinition attributeDefinition);
 
-    Optional<AttributeDefinition> findByNameAndTypeAndSpecificationIdAndSelectableOptions(final String name, final AttributeDefinitionType definitionType,
-                                                                                          final AttributeDefinitionSpecificationType specificationType,
-                                                                                          final String value,
-                                                                                          final Set<String> selectableOptions);
+    Optional<AttributeDefinition> findByNameAndTypeAndSpecification(final String name, final AttributeDefinitionType definitionType,
+                                                                    final AttributeDefinitionSpecificationType specificationType);
 
     Optional<AttributeDefinition> findById(final Long id);
 

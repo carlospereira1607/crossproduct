@@ -75,19 +75,19 @@ class AttributeDefinitionRepositoryServiceTest {
     }
 
     @Test
-    void testFindByNameAndTypeAndSpecificationIdAndSelectableOptions() {
-        when(repository.findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(
+    void testFindByNameAndTypeAndSpecification() {
+        when(repository.findByNameAndTypeAndSpecificationType(
                 any(), any(), any(), any(), any())).thenReturn(Optional.of(attributeDefinitionEntity));
         when(attributeDefinitionEntityMapper.toAttributeDefinition(attributeDefinitionEntity)).thenReturn(attributeDefinition);
 
         var result = attributeDefinitionRepositoryService
-                .findByNameAndTypeAndSpecificationIdAndSelectableOptions("Test Attribute", AttributeDefinitionType.TEXT,
+                .findByNameAndTypeAndSpecification("Test Attribute", AttributeDefinitionType.TEXT,
                         AttributeDefinitionSpecificationType.TEXT_FORMAT, "Test Value", new HashSet<>(Arrays.asList("option1", "option2")));
 
         assertTrue(result.isPresent());
         assertEquals(attributeDefinition.getId(), result.get().getId());
         assertEquals(attributeDefinition.getName(), result.get().getName());
-        verify(repository).findByNameAndTypeAndSpecificationTypeAndValueAndSelectableOptions(
+        verify(repository).findByNameAndTypeAndSpecificationType(
                 any(), any(), any(), any(), any());
     }
 
