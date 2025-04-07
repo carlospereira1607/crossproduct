@@ -1,7 +1,7 @@
 package com.marketplace.crossproduct.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marketplace.crossproduct.core.exception.ApiError;
+import com.marketplace.crossproduct.core.exception.ApiErrorWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ public class AuthEntryPointJwt  implements AuthenticationEntryPoint {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
         response.getWriter().write(new ObjectMapper().writeValueAsString(
-                new ApiError("ERR_UNAUTHORIZED", "Authentication required", HttpStatus.UNAUTHORIZED.value())
+                new ApiErrorWrapper("ERR_UNAUTHORIZED", "Authentication required", HttpStatus.UNAUTHORIZED.value())
         ));
     }
 

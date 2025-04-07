@@ -9,32 +9,32 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<ApiError> handleUserNotFound(DataNotFoundException ex) {
-        ApiError error = new ApiError("DATA_NOT_FOUND", ex.getMessage(), HttpStatus.NOT_FOUND.value());
+    public ResponseEntity<ApiErrorWrapper> handleUserNotFound(DataNotFoundException ex) {
+        ApiErrorWrapper error = new ApiErrorWrapper("ERR_DATA_NOT_FOUND", ex.getMessage(), HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiError> handleBadRequest(IllegalArgumentException ex) {
-        ApiError error = new ApiError("ERR_BAD_REQUEST", ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+    public ResponseEntity<ApiErrorWrapper> handleBadRequest(IllegalArgumentException ex) {
+        ApiErrorWrapper error = new ApiErrorWrapper("ERR_BAD_REQUEST", ex.getMessage(), HttpStatus.BAD_REQUEST.value());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<ApiError> handleRuntime(InvalidCredentialsException ex) {
-        ApiError error = new ApiError("ERR_INVALID_CREDENTIALS", ex.getMessage(), HttpStatus.UNAUTHORIZED.value());
+    public ResponseEntity<ApiErrorWrapper> handleRuntime(InvalidCredentialsException ex) {
+        ApiErrorWrapper error = new ApiErrorWrapper("ERR_INVALID_CREDENTIALS", ex.getMessage(), HttpStatus.UNAUTHORIZED.value());
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(DuplicatedEntryException.class)
-    public ResponseEntity<ApiError> handleRuntime(DuplicatedEntryException ex) {
-        ApiError error = new ApiError("ERR_DUPLICATED_DATA", ex.getMessage(), HttpStatus.CONFLICT.value());
+    public ResponseEntity<ApiErrorWrapper> handleRuntime(DuplicatedEntryException ex) {
+        ApiErrorWrapper error = new ApiErrorWrapper("ERR_DUPLICATED_DATA", ex.getMessage(), HttpStatus.CONFLICT.value());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ApiError> handleRuntime(RuntimeException ex) {
-        ApiError error = new ApiError("ERR_INTERNAL", ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+    public ResponseEntity<ApiErrorWrapper> handleRuntime(RuntimeException ex) {
+        ApiErrorWrapper error = new ApiErrorWrapper("ERR_INTERNAL", ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
