@@ -1,6 +1,6 @@
 package com.marketplace.crossproduct.core.usecase.createattributevalue;
 
-import com.marketplace.crossproduct.core.exception.DataNotFound;
+import com.marketplace.crossproduct.core.exception.DataNotFoundException;
 import com.marketplace.crossproduct.core.exception.DuplicatedEntryException;
 import com.marketplace.crossproduct.core.service.AttributeDefinitionService;
 import com.marketplace.crossproduct.core.service.AttributeValueService;
@@ -24,12 +24,12 @@ public class CreateAttributeValueUseCase implements UseCase<CreateAttributeValue
     @Override
     public CreateAttributeValueOutput execute(final CreateAttributeValueInput input) {
         var definition = attributeDefinitionService.findById(input.getDefinitionId())
-                                                                                .orElseThrow(() -> new DataNotFound("Could not find attribute definition"));
+                                                                                .orElseThrow(() -> new DataNotFoundException("Could not find attribute definition"));
         var product = productService.findById(input.getProductId())
-                .orElseThrow(() -> new DataNotFound("Could not find product"));
+                .orElseThrow(() -> new DataNotFoundException("Could not find product"));
 
         var portal = portalService.findById(input.getPortalId())
-                .orElseThrow(() -> new DataNotFound("Could not find portal"));
+                .orElseThrow(() -> new DataNotFoundException("Could not find portal"));
 
         var existingValue = attributeValueService.findByPortalProductDefinition(input.getPortalId(), input.getProductId(), input.getDefinitionId());
         if(existingValue.isPresent()) {
